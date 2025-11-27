@@ -1,77 +1,672 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob:;">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Macau Walker</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <!-- Babel Standalone for in-browser compilation -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              primary: '#0F766E', // Teal 700
-              secondary: '#F59E0B', // Amber 500
-              surface: '#F3F4F6', // Gray 100
-            },
-            fontFamily: {
-              sans: ['Inter', 'sans-serif'],
-            },
-            keyframes: {
-              slideUp: {
-                '0%': { transform: 'translateY(100%)' },
-                '100%': { transform: 'translateY(0)' },
-              },
-              zoomIn: {
-                '0%': { opacity: '0', transform: 'scale(0.95)' },
-                '100%': { opacity: '1', transform: 'scale(1)' },
-              }
-            },
-            animation: {
-              'slide-up': 'slideUp 0.3s ease-out',
-              'zoom-in': 'zoomIn 0.2s ease-out',
-            }
-          }
-        }
+import React, { useState, useEffect, useMemo } from 'react';
+import { 
+  Plane, Hotel, Utensils, Camera, MapPin, 
+  Info, X, Calendar, Map as MapIcon, 
+  Navigation, Sun, Cloud, CloudRain, Smartphone,
+  ShoppingBag, Bed, DollarSign, Leaf, ExternalLink,
+  Image as ImageIcon, Heart, Star, CloudLightning, Wind
+} from 'lucide-react';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import L from 'leaflet';
+
+// --- Itinerary Data ---
+const itineraryData = {
+  1: [
+    {
+      id: 'd1-1',
+      time: '10:00',
+      title: '抵達澳門',
+      location: '澳門國際機場 (MFM)',
+      type: 'flight',
+      coords: [22.1583, 113.5933],
+      description: '航班 NX631 TPE-MFM。領取行李後，分兩台計程車前往十六浦。',
+      details: { flight: 'NX631', terminal: 'Arrivals', notes: '記得開啟漫遊或更換 SIM 卡' },
+      imageParams: 'airport,travel'
+    },
+    {
+      id: 'd1-2',
+      time: '12:30',
+      title: '飯店入住/寄放行李',
+      location: '澳門十六浦索菲特',
+      type: 'hotel',
+      coords: [22.1965, 113.5367],
+      description: '辦理入住手續，寄放行李。位於內港歷史區。',
+      details: { bookingRef: 'SOF-882193', address: '澳門巴素打爾古街', checkIn: '15:00' },
+      imageParams: 'luxury hotel,lobby'
+    },
+    {
+      id: 'd1-3',
+      time: '13:30',
+      title: '午餐：粵式飲茶',
+      location: '樂軒華粵菜餐廳 (18F)',
+      type: 'food',
+      coords: [22.1965, 113.5367],
+      description: '飯店直達 18 樓，享用精緻點心與 270 度江景。',
+      details: { reservation: 'Mr. Chen (6 pax)', dietary: '1位素食 (提供素粉果/炒飯)' },
+      imageParams: 'dim sum,cantonese food'
+    },
+    {
+      id: 'd1-4',
+      time: '15:00',
+      title: '文青散策：望德堂區',
+      location: '婆仔屋 / 瘋堂斜巷',
+      type: 'camera',
+      coords: [22.1968, 113.5458],
+      description: '避開大三巴人潮，探索葡式建築與文創小店。',
+      details: { highlights: ['婆仔屋老樟樹', '仁慈堂婆仔屋', '葡國碎石路'], transport: '計程車約 MOP 30' },
+      imageParams: 'portuguese architecture,macau street'
+    },
+    {
+      id: 'd1-5',
+      time: '18:00',
+      title: '晚餐：自助山 Buffet',
+      location: '上葡京綜合度假村',
+      type: 'food',
+      coords: [22.1408, 113.5714],
+      description: '澳門自助餐天花板！戶外燒烤區與生猛海鮮。',
+      details: { reservation: '18:00 (4 pax)', notes: '另外2位自由活動', transport: '需跨海，車程約 25 分鐘' },
+      imageParams: 'seafood buffet,grill'
+    }
+  ],
+  2: [
+    {
+      id: 'd2-1',
+      time: '08:30',
+      title: '飯店早餐',
+      location: '十六浦海風餐廳',
+      type: 'food',
+      coords: [22.1965, 113.5367],
+      description: '享用飯店包含的自助早餐，隨後退房。',
+      details: { notes: 'Check-out 時間 11:00 前' },
+      imageParams: 'breakfast buffet,croissant'
+    },
+    {
+      id: 'd2-2',
+      time: '11:30',
+      title: '午餐 & 官也街',
+      location: 'La Famiglia 葡意料理',
+      type: 'food',
+      coords: [22.1539, 113.5574],
+      description: '位於氹仔舊城區，適合多人聚餐。必買安德魯蛋塔。',
+      details: { reservation: '11:30 (6 pax)', dietary: '可做素義大利麵', mustBuy: ['安德魯蛋塔', '晃記餅家', '莫義記雪糕'] },
+      imageParams: 'egg tart,macau food'
+    },
+    {
+      id: 'd2-3',
+      time: '14:30',
+      title: '分流：朋友送機',
+      location: '前往機場 / 返回飯店',
+      type: 'transport',
+      coords: [22.1539, 113.5574],
+      description: '一位朋友前往機場 (NX618)。其餘步行回瑞吉。',
+      details: { flight: 'NX618 (17:35起飛)', notes: '建議 15:00 前離開官也街' },
+      imageParams: 'airport terminal'
+    },
+    {
+      id: 'd2-4',
+      time: '15:30',
+      title: '入住瑞吉酒店',
+      location: '澳門瑞吉酒店',
+      type: 'hotel',
+      coords: [22.1467, 113.5669],
+      description: '體驗管家服務，參觀倫敦人水晶金殿。',
+      details: { bookingRef: 'REG-991022', notes: '請管家準備咖啡/茶', checkIn: '15:00' },
+      imageParams: 'luxury bedroom,butler'
+    },
+    {
+      id: 'd2-5',
+      time: '19:00',
+      title: '晚餐：客房餐飲 (MOP 800)',
+      location: '瑞吉酒店客房',
+      type: 'food',
+      coords: [22.1467, 113.5669],
+      description: '利用房內 MOP 800 額度，享受私密晚餐。已根據您的菜單圖片整理推薦。',
+      details: { 
+        credit: '每房 MOP 800 額度', 
+        westernMain: '澳洲和牛扒(548)、和牛漢堡(248)',
+        asianMain: '龍蝦雲吞麵(188)、海鮮伊麵(268)',
+        vegetarian: '蘑菇湯(138)、芝士胡椒意粉(218)、時令蔬菜(88)',
+        sweet: '葡式焦糖布甸(118)、紐約芝士蛋糕(118)',
+        notes: '撥打 "In-Room Dining" 點餐'
+      },
+      imageParams: 'fine dining,steak,lobster',
+      menuHighlights: [
+        { name: '澳洲和牛扒', price: '548 MOP', tag: '奢華首選', imgParams: 'wagyu steak' },
+        { name: '和牛漢堡', price: '248 MOP', tag: '人氣推薦', imgParams: 'burger' },
+        { name: '龍蝦豬肉雲吞麵', price: '188 MOP', tag: '亞洲風味', imgParams: 'wonton noodle' },
+        { name: '芝士胡椒意粉', price: '218 MOP', tag: '素食友善', imgParams: 'pasta cheese' },
+        { name: '葡式焦糖布甸', price: '118 MOP', tag: '甜點必吃', imgParams: 'creme brulee' },
+      ]
+    }
+  ],
+  3: [
+    {
+      id: 'd3-1',
+      time: '09:00',
+      title: '半自助早餐',
+      location: '雅舍 The Manor',
+      type: 'food',
+      coords: [22.1467, 113.5669],
+      description: '享用著名的現點現做主餐早餐（龍蝦蛋、牛排蛋）。',
+      details: { notes: '素食可點酪梨吐司/松露炒蛋' },
+      imageParams: 'eggs benedict'
+    },
+    {
+      id: 'd3-2',
+      time: '11:00',
+      title: '路環漁村慢活',
+      location: '路環聖方濟各聖堂',
+      type: 'camera',
+      coords: [22.1186, 113.5516],
+      description: '感受漁村寧靜，參觀教堂與圖書館。',
+      details: { transport: '計程車約 10 分鐘', highlights: ['安德魯總店', '十月初五馬路'] },
+      imageParams: 'coloane macau,village'
+    },
+    {
+      id: 'd3-3',
+      time: '12:00',
+      title: '午餐：雅憩花園餐廳',
+      location: '路環市區',
+      type: 'food',
+      coords: [22.1188, 113.5519],
+      description: '教堂前大樹下的風味大排檔。',
+      details: { recommend: ['西洋烚菜', '炒雜菜', '海鮮'], notes: '環境舒適愜意' },
+      imageParams: 'outdoor dining,seafood'
+    },
+    {
+      id: 'd3-4',
+      time: '14:30',
+      title: '最後採買/前往機場',
+      location: '四季名店 / 機場',
+      type: 'shopping',
+      coords: [22.1469, 113.5644],
+      description: '返回路氹做最後購物，隨後前往機場。',
+      details: { flight: 'NX618 (17:35起飛)', transport: '瑞吉至機場約 10 分鐘' },
+      imageParams: 'duty free shop'
+    }
+  ]
+};
+
+// --- Schematic Map Component ---
+const SchematicMap = ({ points }) => {
+  const lats = points.map(p => p.coords[0]);
+  const lngs = points.map(p => p.coords[1]);
+  const minLat = Math.min(...lats);
+  const maxLat = Math.max(...lats);
+  const minLng = Math.min(...lngs);
+  const maxLng = Math.max(...lngs);
+
+  const latSpan = maxLat - minLat;
+  const lngSpan = maxLng - minLng;
+  const paddingLat = latSpan * 0.2;
+  const paddingLng = lngSpan * 0.2;
+  
+  const boundMinLat = minLat - paddingLat;
+  const boundMaxLat = maxLat + paddingLat;
+  const boundMinLng = minLng - paddingLng;
+  const boundMaxLng = maxLng + paddingLng;
+
+  const normalize = (lat, lng) => {
+    const x = ((lng - boundMinLng) / (boundMaxLng - boundMinLng)) * 100;
+    const y = 100 - ((lat - boundMinLat) / (boundMaxLat - boundMinLat)) * 100;
+    return { x, y };
+  };
+
+  return (
+    <div className="w-full h-full bg-slate-100 relative p-6 flex flex-col items-center justify-center">
+      <div className="absolute top-4 left-4 z-10 bg-white/80 backdrop-blur p-2 rounded text-xs text-slate-500 shadow-sm">
+        行程示意地圖 (Schematic Map)
+      </div>
+      
+      <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-xl" style={{ maxHeight: '80vh' }}>
+        <polyline 
+          points={points.map(p => {
+            const { x, y } = normalize(p.coords[0], p.coords[1]);
+            return `${x},${y}`;
+          }).join(' ')}
+          fill="none"
+          stroke="#cbd5e1"
+          strokeWidth="1.5"
+          strokeDasharray="4"
+          strokeLinecap="round"
+        />
+
+        {points.map((point) => {
+          const { x, y } = normalize(point.coords[0], point.coords[1]);
+          const isHotel = point.type === 'hotel';
+          
+          return (
+            <g key={point.id} className="cursor-pointer group">
+              <circle cx={x} cy={y} r="4" fill="white" stroke={isHotel ? '#4f46e5' : '#ef4444'} strokeWidth="0.8" />
+              <circle cx={x} cy={y} r="2" fill={isHotel ? '#4f46e5' : '#ef4444'} />
+              <foreignObject x={x - 15} y={y + 5} width="30" height="20" className="overflow-visible">
+                 <div className="flex flex-col items-center">
+                    <span className={`text-[4px] px-1 rounded shadow-sm whitespace-nowrap font-bold 
+                      ${isHotel ? 'bg-indigo-600 text-white' : 'bg-white text-gray-700'}`}>
+                      {point.number}
+                    </span>
+                 </div>
+              </foreignObject>
+            </g>
+          );
+        })}
+      </svg>
+      
+      <div className="absolute bottom-4 left-4 right-4 max-h-[30%] overflow-y-auto bg-white/90 backdrop-blur rounded-lg shadow-lg border border-gray-100 p-3">
+         <h4 className="text-xs font-bold text-gray-500 mb-2 uppercase tracking-wider">地圖索引</h4>
+         <div className="space-y-2">
+            {points.map(p => (
+              <a 
+                key={p.id}
+                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.location)}`}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-2 text-xs p-1 hover:bg-gray-100 rounded transition"
+              >
+                <span className="flex-shrink-0 w-4 h-4 rounded-full bg-red-100 text-red-600 flex items-center justify-center font-bold text-[9px] border border-red-200">
+                  {p.number}
+                </span>
+                <span className="truncate flex-1 font-medium text-gray-700">{p.title}</span>
+                <ExternalLink className="w-3 h-3 text-gray-400" />
+              </a>
+            ))}
+         </div>
+      </div>
+    </div>
+  );
+};
+
+// --- Gallery View Component ---
+const GalleryView = ({ itineraryData }) => {
+  return (
+    <div className="p-4 pb-24 space-y-8">
+      
+      {/* --- Itinerary Overview Illustration --- */}
+      <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 ring-2 ring-emerald-50">
+         <h2 className="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
+            <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
+            旅程手繪總覽
+         </h2>
+         <div className="relative rounded-lg overflow-hidden bg-orange-50/50 border border-orange-100">
+           {/* Placeholder for the user's uploaded hand-drawn itinerary */}
+           <img 
+             src="https://placehold.co/600x1200/fffbf0/ea580c?text=3天2夜+澳門手繪行程圖+(請替換為上傳的插圖)" 
+             alt="澳門手繪行程總覽" 
+             className="w-full h-auto object-cover"
+           />
+           <div className="absolute bottom-2 right-2 bg-white/90 backdrop-blur px-2 py-1 rounded text-[10px] text-gray-500 shadow-sm border border-gray-100">
+              包含：內港風情、官也街美食、路環慢活
+           </div>
+         </div>
+         <p className="text-xs text-gray-500 mt-2 text-center">
+            一張圖看完 6 人行精華路線 ✨
+         </p>
+      </div>
+
+      <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+        <h2 className="text-lg font-bold text-gray-800 mb-2 flex items-center gap-2">
+          <Utensils className="w-5 h-5 text-orange-500" />
+          瑞吉客房餐飲精選
+        </h2>
+        <p className="text-xs text-gray-500 mb-4">根據您提供的菜單為您整理的推薦菜色 (MOP 800額度)</p>
+        
+        <div className="grid grid-cols-2 gap-3">
+          {itineraryData[2].find(i => i.menuHighlights)?.menuHighlights.map((dish, idx) => (
+             <div key={idx} className="relative group overflow-hidden rounded-lg shadow-sm border border-gray-100">
+               <img 
+                 src={`https://placehold.co/300x200/fafafa/d4d4d4?text=${encodeURIComponent(dish.imgParams)}`} 
+                 alt={dish.name}
+                 className="w-full h-24 object-cover"
+               />
+               <div className="p-2 bg-white">
+                 <div className="flex justify-between items-start">
+                    <h3 className="text-xs font-bold text-gray-800">{dish.name}</h3>
+                    <span className="text-[10px] font-bold text-emerald-600">{dish.price}</span>
+                 </div>
+                 <span className="inline-block mt-1 text-[9px] px-1.5 py-0.5 bg-orange-100 text-orange-700 rounded-full">
+                   {dish.tag}
+                 </span>
+               </div>
+             </div>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <h2 className="text-lg font-bold text-gray-800 mb-4 px-1">每日行程集錦</h2>
+        <div className="columns-2 gap-3 space-y-3">
+          {Object.entries(itineraryData).map(([day, items]) => (
+            items.map(item => (
+              <div key={item.id} className="break-inside-avoid bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                <div className="relative">
+                   <img 
+                     src={`https://placehold.co/400x300/eef2ff/6366f1?text=${encodeURIComponent(item.imageParams)}`}
+                     alt={item.title}
+                     className="w-full object-cover"
+                   />
+                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-2 pt-6">
+                     <p className="text-white text-xs font-bold">{item.title}</p>
+                   </div>
+                   <div className="absolute top-2 left-2 bg-white/90 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider text-gray-600">
+                     Day {day}
+                   </div>
+                </div>
+                <div className="p-2">
+                  <p className="text-[10px] text-gray-500 flex items-center gap-1">
+                    <MapPin className="w-3 h-3" /> {item.location}
+                  </p>
+                </div>
+              </div>
+            ))
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+
+// --- Main Application Component ---
+
+export default function MacauTripApp() {
+  const [currentDay, setCurrentDay] = useState(1);
+  const [view, setView] = useState('timeline'); // 'timeline', 'map', 'gallery'
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [showTips, setShowTips] = useState(false);
+  const [weather, setWeather] = useState({ temp: 22, code: 0 });
+
+  // Fetch Weather
+  useEffect(() => {
+    const fetchWeather = async () => {
+      try {
+        const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=22.19&longitude=113.54&current=temperature_2m,weather_code&timezone=Asia%2FShanghai');
+        const data = await res.json();
+        setWeather({
+          temp: Math.round(data.current.temperature_2m),
+          code: data.current.weather_code
+        });
+      } catch (e) {
+        console.error("Weather fetch failed", e);
       }
-    </script>
-    <style>
-      /* Custom Scrollbar hide */
-      .no-scrollbar::-webkit-scrollbar {
-        display: none;
-      }
-      .no-scrollbar {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-      }
-      /* Leaflet Container Fix */
-      .leaflet-container {
-        width: 100%;
-        height: 100%;
-        z-index: 10;
-      }
-    </style>
-  <script type="importmap">
-{
-  "imports": {
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "react-leaflet": "https://aistudiocdn.com/react-leaflet@^5.0.0",
-    "leaflet/": "https://aistudiocdn.com/leaflet@^1.9.4/",
-    "leaflet": "https://aistudiocdn.com/leaflet@^1.9.4"
-  }
+    };
+    fetchWeather();
+  }, []);
+
+  const getWeatherIcon = (code) => {
+    if (code <= 1) return <Sun className="w-5 h-5 text-yellow-400" />;
+    if (code <= 3) return <Cloud className="w-5 h-5 text-gray-200" />;
+    if (code <= 48) return <Wind className="w-5 h-5 text-blue-200" />;
+    if (code <= 67) return <CloudRain className="w-5 h-5 text-blue-400" />;
+    if (code >= 95) return <CloudLightning className="w-5 h-5 text-purple-400" />;
+    return <Cloud className="w-5 h-5 text-gray-200" />;
+  };
+
+  const getWeatherDesc = (code) => {
+    if (code <= 1) return '晴朗';
+    if (code <= 3) return '多雲';
+    if (code <= 48) return '起霧';
+    if (code <= 67) return '有雨';
+    if (code <= 99) return '雷雨';
+    return '多雲';
+  };
+
+  const currentDateStr = useMemo(() => {
+    const dates = { 1: '12/13 (六)', 2: '12/14 (日)', 3: '12/15 (一)' };
+    return dates[currentDay];
+  }, [currentDay]);
+
+  const allMapPoints = useMemo(() => {
+    let points = [];
+    let count = 1;
+    [1, 2, 3].forEach(day => {
+      itineraryData[day].forEach(item => {
+        points.push({ ...item, day, number: count++ });
+      });
+    });
+    return points;
+  }, []);
+
+  const IconMap = {
+    flight: Plane,
+    hotel: Hotel,
+    food: Utensils,
+    camera: Camera,
+    transport: Navigation,
+    shopping: ShoppingBag,
+  };
+
+  return (
+    <div className="flex flex-col h-screen bg-slate-50 font-sans max-w-md mx-auto relative shadow-2xl overflow-hidden">
+      
+      {/* --- Top Bar / Hero Section --- */}
+      <div className="bg-emerald-700 text-white p-6 pt-10 rounded-b-3xl shadow-lg z-10 relative shrink-0">
+        <div className="flex justify-between items-start mb-4">
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight">澳門奢華慢活之旅</h1>
+            <div className="flex items-center gap-2 mt-1 opacity-90 text-sm">
+              <MapPin className="w-4 h-4" />
+              <span>Macau, China</span>
+            </div>
+          </div>
+          <button 
+            onClick={() => setShowTips(true)}
+            className="bg-emerald-600 p-2 rounded-full hover:bg-emerald-500 transition shadow-inner"
+          >
+            <Info className="w-5 h-5" />
+          </button>
+        </div>
+        
+        <div className="flex items-end justify-between">
+          <div>
+            <p className="text-emerald-200 text-sm font-medium uppercase tracking-wider">Day {currentDay}</p>
+            <p className="text-3xl font-semibold">{currentDateStr}</p>
+          </div>
+          {/* Enhanced Weather Widget */}
+          <div className="flex flex-col items-end">
+             <div className="flex items-center gap-2 bg-white/10 px-3 py-1 rounded-lg backdrop-blur-sm shadow-sm border border-white/10">
+               {getWeatherIcon(weather.code)}
+               <div className="flex flex-col items-end">
+                 <span className="text-xl font-bold leading-none">{weather.temp}°C</span>
+                 <span className="text-[10px] opacity-80">{getWeatherDesc(weather.code)}</span>
+               </div>
+             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* --- Main Content Area --- */}
+      <div className="flex-1 overflow-y-auto overflow-x-hidden relative scroll-smooth bg-gray-50">
+        
+        {view === 'timeline' && (
+          <div className="p-4 pb-24 space-y-6">
+            {itineraryData[currentDay].map((item, index) => {
+              const Icon = IconMap[item.type] || MapPin;
+              const isLast = index === itineraryData[currentDay].length - 1;
+              
+              return (
+                <div key={item.id} className="relative flex gap-4">
+                  {/* Timeline Line */}
+                  {!isLast && (
+                    <div className="absolute left-[27px] top-10 bottom-[-24px] w-0.5 bg-gray-200" />
+                  )}
+                  
+                  {/* Left: Time & Icon */}
+                  <div className="flex flex-col items-center min-w-[56px]">
+                    <span className="text-xs font-bold text-gray-500 mb-1">{item.time}</span>
+                    <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-md z-10 
+                      ${item.type === 'food' ? 'bg-orange-100 text-orange-600' : 
+                        item.type === 'hotel' ? 'bg-indigo-100 text-indigo-600' : 
+                        item.type === 'flight' ? 'bg-blue-100 text-blue-600' : 
+                        'bg-emerald-100 text-emerald-600'}`}
+                    >
+                      <Icon className="w-6 h-6" />
+                    </div>
+                  </div>
+
+                  {/* Right: Card */}
+                  <div 
+                    onClick={() => setSelectedItem(item)}
+                    className="flex-1 bg-white p-4 rounded-xl shadow-sm border border-gray-100 active:scale-98 transition-transform cursor-pointer group"
+                  >
+                    <div className="flex justify-between items-start">
+                      <h3 className="font-bold text-gray-800">{item.title}</h3>
+                      <a 
+                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.location)}`}
+                        onClick={(e) => e.stopPropagation()}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-gray-400 hover:text-emerald-600 p-1"
+                      >
+                        <MapIcon className="w-4 h-4" />
+                      </a>
+                    </div>
+                    <p className="text-sm text-emerald-700 font-medium mb-1 flex items-center gap-1">
+                      <MapPin className="w-3 h-3" /> {item.location}
+                    </p>
+                    <p className="text-sm text-gray-500 line-clamp-2">{item.description}</p>
+                    
+                    <div className="flex gap-2 mt-2">
+                       {item.details?.dietary && (
+                         <span className="flex items-center gap-1 text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full">
+                           <Leaf className="w-3 h-3" /> 素食友善
+                         </span>
+                       )}
+                       {item.details?.credit && (
+                         <span className="flex items-center gap-1 text-[10px] bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full">
+                           <DollarSign className="w-3 h-3" /> MOP 800額度
+                         </span>
+                       )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {view === 'map' && <SchematicMap points={allMapPoints} />}
+
+        {view === 'gallery' && <GalleryView itineraryData={itineraryData} />}
+      </div>
+
+      {/* --- Bottom Navigation --- */}
+      <div className="bg-white border-t border-gray-200 p-2 pb-6 flex justify-around items-center shrink-0 z-20 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+        {[1, 2, 3].map(day => (
+          <button
+            key={day}
+            onClick={() => { setCurrentDay(day); setView('timeline'); }}
+            className={`flex flex-col items-center p-2 rounded-xl transition-all w-14
+              ${currentDay === day && view === 'timeline' 
+                ? 'bg-emerald-100 text-emerald-700 scale-105' 
+                : 'text-gray-400 hover:bg-gray-50'}`}
+          >
+            <Calendar className="w-5 h-5 mb-1" />
+            <span className="text-[10px] font-medium">Day {day}</span>
+          </button>
+        ))}
+        <div className="w-px h-8 bg-gray-200 mx-1" />
+        <button
+            onClick={() => setView('gallery')}
+            className={`flex flex-col items-center p-2 rounded-xl transition-all w-14
+              ${view === 'gallery' 
+                ? 'bg-pink-100 text-pink-700 scale-105' 
+                : 'text-gray-400 hover:bg-gray-50'}`}
+          >
+            <ImageIcon className="w-5 h-5 mb-1" />
+            <span className="text-[10px] font-medium">插圖</span>
+          </button>
+        <button
+            onClick={() => setView('map')}
+            className={`flex flex-col items-center p-2 rounded-xl transition-all w-14
+              ${view === 'map' 
+                ? 'bg-blue-100 text-blue-700 scale-105' 
+                : 'text-gray-400 hover:bg-gray-50'}`}
+          >
+            <MapIcon className="w-5 h-5 mb-1" />
+            <span className="text-[10px] font-medium">地圖</span>
+          </button>
+      </div>
+
+      {/* --- Detail Modal --- */}
+      {selectedItem && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
+          <div className="bg-white w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
+            <div className="bg-emerald-600 p-4 text-white flex justify-between items-center">
+              <h3 className="font-bold text-lg">{selectedItem.title}</h3>
+              <button onClick={() => setSelectedItem(null)}><X className="w-6 h-6" /></button>
+            </div>
+            <div className="p-6">
+              <div className="flex items-center gap-2 mb-4 text-emerald-700 font-medium">
+                 <MapPin className="w-4 h-4" /> {selectedItem.location}
+              </div>
+              <p className="text-gray-600 mb-6 leading-relaxed">{selectedItem.description}</p>
+              
+              <div className="bg-gray-50 rounded-xl p-4 border border-gray-100 space-y-3">
+                <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">詳細資訊</h4>
+                {selectedItem.details && Object.entries(selectedItem.details).map(([key, value]) => (
+                  <div key={key} className="flex justify-between text-sm border-b border-gray-100 last:border-0 pb-2 last:pb-0">
+                    <span className="text-gray-500 capitalize">{key.replace(/([A-Z])/g, ' $1')}</span>
+                    <span className="font-semibold text-gray-800 text-right max-w-[60%] leading-tight">
+                        {Array.isArray(value) ? value.join(', ') : value}
+                    </span>
+                  </div>
+                ))}
+              </div>
+              
+              <a 
+                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selectedItem.location)}`}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-6 w-full bg-emerald-600 text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-emerald-700 transition"
+              >
+                <Navigation className="w-5 h-5" /> 開啟 Google Maps 導航
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* --- Travel Tips Modal --- */}
+      {showTips && (
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+          <div className="bg-white w-full max-w-sm rounded-2xl p-6 shadow-2xl">
+            <div className="flex justify-between items-center mb-4 border-b pb-2">
+              <h3 className="font-bold text-xl text-emerald-800">台灣人遊澳門小貼士</h3>
+              <button onClick={() => setShowTips(false)} className="bg-gray-100 rounded-full p-1"><X className="w-5 h-5" /></button>
+            </div>
+            <div className="space-y-4">
+               <div className="flex gap-3">
+                 <div className="bg-blue-50 p-2 rounded-lg h-fit"><Smartphone className="w-5 h-5 text-blue-600"/></div>
+                 <div>
+                   <h4 className="font-bold text-sm">簽證與證件</h4>
+                   <p className="text-xs text-gray-600">持台灣護照免簽 (30天)，但建議攜帶台胞證以備不時之需 (如進出珠海)。</p>
+                 </div>
+               </div>
+               <div className="flex gap-3">
+                 <div className="bg-yellow-50 p-2 rounded-lg h-fit"><span className="font-bold text-yellow-600">$</span></div>
+                 <div>
+                   <h4 className="font-bold text-sm">貨幣</h4>
+                   <p className="text-xs text-gray-600">主要使用澳門幣 (MOP)。港幣 (HKD) 通用 (1:1)，但不補水。建議在台灣換港幣，或到澳門用台幣換澳門幣。</p>
+                 </div>
+               </div>
+               <div className="flex gap-3">
+                 <div className="bg-purple-50 p-2 rounded-lg h-fit"><span className="font-bold text-purple-600">⚡</span></div>
+                 <div>
+                   <h4 className="font-bold text-sm">電壓與插座</h4>
+                   <p className="text-xs text-gray-600">220V，插座為英式三腳方型 (G型)。需攜帶轉接頭。</p>
+                 </div>
+               </div>
+               <div className="flex gap-3">
+                 <div className="bg-green-50 p-2 rounded-lg h-fit"><Navigation className="w-5 h-5 text-green-600"/></div>
+                 <div>
+                   <h4 className="font-bold text-sm">交通 App</h4>
+                   <p className="text-xs text-gray-600">下載「澳門電召」或「巴士報站」。計程車需付現金或 MPay (部分收支付寶)。</p>
+                 </div>
+               </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
-</script>
-</head>
-  <body class="bg-gray-50 text-gray-900 overflow-hidden">
-    <div id="root" class="h-full w-full"></div>
-    <script type="text/babel" data-presets="react,typescript" src="./index.tsx"></script>
-  </body>
-</html>
