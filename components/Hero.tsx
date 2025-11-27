@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { CloudSun, Info, MapPin, Droplets, Wind } from 'lucide-react';
-import { getRealtimeWeather } from '../services/geminiService';
-import { WeatherData } from '../types';
+import { getRealtimeWeather } from '../services/geminiService.ts';
+import { WeatherData } from '../types.ts';
 
 interface HeroProps {
   onOpenTips: () => void;

@@ -1,8 +1,8 @@
 import React from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet'; // Changed from named import to default import
-import { ITINERARY } from '../constants';
-import { ItineraryItem } from '../types';
+import { ITINERARY } from '../constants.ts';
+import { ItineraryItem } from '../types.ts';
 
 // Custom Marker Icon
 const customIcon = new L.Icon({

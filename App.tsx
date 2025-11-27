@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { ITINERARY } from './constants';
-import { Tab, ItineraryItem } from './types';
-import Hero from './components/Hero';
-import Timeline from './components/Timeline';
-import BottomNav from './components/BottomNav';
-import MapView from './components/MapView';
-import DetailModal from './components/DetailModal';
-import TipsModal from './components/TipsModal';
-import IllustrationView from './components/IllustrationView';
-import { getSmartTravelTips } from './services/geminiService';
+import { ITINERARY } from './constants.ts';
+import { Tab, ItineraryItem } from './types.ts';
+import Hero from './components/Hero.tsx';
+import Timeline from './components/Timeline.tsx';
+import BottomNav from './components/BottomNav.tsx';
+import MapView from './components/MapView.tsx';
+import DetailModal from './components/DetailModal.tsx';
+import TipsModal from './components/TipsModal.tsx';
+import IllustrationView from './components/IllustrationView.tsx';
+import { getSmartTravelTips } from './services/geminiService.ts';
 
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<Tab>('day1');

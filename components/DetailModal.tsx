@@ -1,6 +1,6 @@
 import React from 'react';
 import { X, MapPin, Ticket, AlertCircle, FileText } from 'lucide-react';
-import { ItineraryItem, ActivityType } from '../types';
+import { ItineraryItem, ActivityType } from '../types.ts';
 
 interface DetailModalProps {
   item: ItineraryItem | null;

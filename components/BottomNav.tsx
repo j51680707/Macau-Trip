@@ -1,6 +1,6 @@
 import React from 'react';
 import { Map, Calendar, CalendarDays, CalendarRange, Image as ImageIcon } from 'lucide-react';
-import { Tab } from '../types';
+import { Tab } from '../types.ts';
 
 interface BottomNavProps {
   activeTab: Tab;

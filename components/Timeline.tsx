@@ -1,6 +1,6 @@
 import React from 'react';
-import { DaySchedule, ItineraryItem } from '../types';
-import TimelineCard from './TimelineCard';
+import { DaySchedule, ItineraryItem } from '../types.ts';
+import TimelineCard from './TimelineCard.tsx';
 
 interface TimelineProps {
   schedule: DaySchedule;

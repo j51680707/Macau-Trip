@@ -1,6 +1,6 @@
 import React from 'react';
 import { Plane, Hotel, Camera, Utensils, Train, ShoppingBag, MapPin, ChevronRight } from 'lucide-react';
-import { ActivityType, ItineraryItem } from '../types';
+import { ActivityType, ItineraryItem } from '../types.ts';
 
 interface TimelineCardProps {
   item: ItineraryItem;

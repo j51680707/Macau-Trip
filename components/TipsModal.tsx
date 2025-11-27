@@ -1,6 +1,6 @@
 import React from 'react';
 import { X, Lightbulb } from 'lucide-react';
-import { TAIWAN_MACAU_TIPS } from '../constants';
+import { TAIWAN_MACAU_TIPS } from '../constants.ts';
 
 interface TipsModalProps {
   isOpen: boolean;

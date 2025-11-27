@@ -1,4 +1,4 @@
-import { ActivityType, DaySchedule } from './types';
+import { ActivityType, DaySchedule } from './types.ts';
 
 export const ITINERARY: DaySchedule[] = [
   {

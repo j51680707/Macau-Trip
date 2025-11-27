@@ -1,5 +1,5 @@
 import { GoogleGenAI } from "@google/genai";
-import { WeatherData } from "../types";
+import { WeatherData } from "../types.ts";
 
 // Initialize AI with safe fallback if key is missing (though prompt assumes it exists)
 // We check typeof process to ensure we don't crash in browser environments without node polyfills

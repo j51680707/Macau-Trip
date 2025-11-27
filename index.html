@@ -7,6 +7,8 @@
     <title>Macau Walker</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Babel Standalone for in-browser compilation -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script>
       tailwind.config = {
         theme: {
@@ -70,6 +72,6 @@
 </head>
   <body class="bg-gray-50 text-gray-900 overflow-hidden">
     <div id="root" class="h-full w-full"></div>
-    <script type="module" src="./index.tsx"></script>
+    <script type="text/babel" data-presets="react,typescript" src="./index.tsx"></script>
   </body>
 </html>
