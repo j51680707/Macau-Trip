@@ -39,6 +39,8 @@ export interface WeatherData {
   temp: string;
   condition: string;
   location: string;
+  humidity: string;
+  windSpeed: string;
 }
 
 export type Tab = 'day1' | 'day2' | 'day3' | 'map' | 'illustration';

@@ -9,12 +9,8 @@ const IllustrationView: React.FC = () => {
       </div>
       
       <div className="bg-white rounded-2xl p-2 shadow-sm border border-gray-100 overflow-hidden">
-        {/* 
-          TODO: Replace the src below with the actual URL of your uploaded infographic.
-          If you have a local file, you might need to host it or put it in a public folder.
-        */}
         <img 
-            src="https://images.unsplash.com/photo-1518182170546-0766aa6f6a56?q=80&w=1000&auto=format&fit=crop" 
+            src="https://raw.githubusercontent.com/j51680707/Macau-Trip/main/components/Gemini_Generated_Image_l7ojm5l7ojm5l7oj.png" 
             alt="Macau Itinerary Infographic" 
             className="w-full h-auto rounded-xl"
         />
