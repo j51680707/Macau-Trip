@@ -11,6 +11,8 @@ interface DetailModalProps {
 const DetailModal: React.FC<DetailModalProps> = ({ item, isOpen, onClose }) => {
   if (!isOpen || !item) return null;
 
+  const isFlight = item.type === ActivityType.FLIGHT;
+
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center pointer-events-none">
       {/* Backdrop */}
@@ -53,19 +55,25 @@ const DetailModal: React.FC<DetailModalProps> = ({ item, isOpen, onClose }) => {
           {item.details && (
             <div className="space-y-4">
               {item.details.bookingCode && (
-                <div className="bg-gray-50 p-4 rounded-xl border border-gray-100 flex items-center justify-between">
+                <div className={`p-4 rounded-xl border flex items-center justify-between ${
+                  isFlight ? 'bg-blue-50 border-blue-100' : 'bg-gray-50 border-gray-100'
+                }`}>
                   <div className="flex items-center">
                     {/* Conditional Icon based on Activity Type */}
-                    {item.type === ActivityType.FLIGHT ? (
-                      <Ticket className="text-secondary mr-3" size={24} />
+                    {isFlight ? (
+                      <Ticket className="text-blue-500 mr-3" size={24} />
                     ) : (
                       <FileText className="text-gray-400 mr-3" size={24} />
                     )}
                     <div>
-                      <div className="text-xs text-gray-500 uppercase font-semibold">
-                        {item.type === ActivityType.FLIGHT ? '電子機票號碼' : '訂位代號'}
+                      <div className={`text-xs uppercase font-semibold ${
+                        isFlight ? 'text-blue-600' : 'text-gray-500'
+                      }`}>
+                        {isFlight ? '電子機票號碼' : '訂位代號'}
                       </div>
-                      <div className="font-mono text-lg font-bold text-gray-800">{item.details.bookingCode}</div>
+                      <div className={`font-mono text-lg font-bold ${
+                        isFlight ? 'text-blue-900' : 'text-gray-800'
+                      }`}>{item.details.bookingCode}</div>
                     </div>
                   </div>
                 </div>
