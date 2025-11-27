@@ -136,9 +136,9 @@
                     id: 'd2-3',
                     time: '14:30',
                     title: '分流：朋友送機',
-                    location: '前往機場 / 返回飯店',
+                    location: '澳門國際機場',
                     type: 'transport',
-                    coords: [22.1539, 113.5574],
+                    coords: [22.1583, 113.5933],
                     description: '一位朋友前往機場 (NX618)。其餘步行回瑞吉。',
                     details: { flight: 'NX618 (17:35起飛)', notes: '建議 15:00 前離開官也街' },
                     imageParams: 'airport terminal'
@@ -158,7 +158,7 @@
                     id: 'd2-5',
                     time: '19:00',
                     title: '晚餐：客房餐飲 (MOP 800)',
-                    location: '瑞吉酒店客房',
+                    location: '澳門瑞吉酒店',
                     type: 'food',
                     coords: [22.1467, 113.5669],
                     description: '利用房內 MOP 800 額度，享受私密晚餐。已根據您的菜單圖片整理推薦。',
@@ -218,7 +218,7 @@
                     id: 'd3-4',
                     time: '14:30',
                     title: '最後採買/前往機場',
-                    location: '四季名店 / 機場',
+                    location: '四季名店',
                     type: 'shopping',
                     coords: [22.1469, 113.5644],
                     description: '返回路氹做最後購物，隨後前往機場。',
@@ -228,88 +228,62 @@
             ]
         };
 
-        // --- Schematic Map Component (Pure SVG) ---
-        const SchematicMap = ({ points }) => {
-            const lats = points.map(p => p.coords[0]);
-            const lngs = points.map(p => p.coords[1]);
-            const minLat = Math.min(...lats);
-            const maxLat = Math.max(...lats);
-            const minLng = Math.min(...lngs);
-            const maxLng = Math.max(...lngs);
+        // --- Google Map Tab Component ---
+        const GoogleMapTab = ({ points }) => {
+            const [activePoint, setActivePoint] = useState(points[0]);
 
-            const latSpan = maxLat - minLat;
-            const lngSpan = maxLng - minLng;
-            const paddingLat = latSpan * 0.2;
-            const paddingLng = lngSpan * 0.2;
-            
-            const boundMinLat = minLat - paddingLat;
-            const boundMaxLat = maxLat + paddingLat;
-            const boundMinLng = minLng - paddingLng;
-            const boundMaxLng = maxLng + paddingLng;
-
-            const normalize = (lat, lng) => {
-                const x = ((lng - boundMinLng) / (boundMaxLng - boundMinLng)) * 100;
-                const y = 100 - ((lat - boundMinLat) / (boundMaxLat - boundMinLat)) * 100;
-                return { x, y };
-            };
+            // Using standard Google Maps Embed output
+            const mapSrc = `https://maps.google.com/maps?q=${encodeURIComponent(activePoint.location)}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
 
             return (
-                <div className="w-full h-full bg-slate-100 relative p-6 flex flex-col items-center justify-center">
-                    <div className="absolute top-4 left-4 z-10 bg-white/80 backdrop-blur p-2 rounded text-xs text-slate-500 shadow-sm">
-                        行程示意地圖 (Schematic Map)
+                <div className="flex flex-col h-full bg-slate-100">
+                    <div className="h-1/2 w-full bg-gray-200 relative shadow-md z-10">
+                         <iframe 
+                            title="Google Map"
+                            width="100%" 
+                            height="100%" 
+                            src={mapSrc}
+                            frameBorder="0" 
+                            scrolling="no" 
+                            marginHeight="0" 
+                            marginWidth="0"
+                            className="w-full h-full"
+                        ></iframe>
+                        <div className="absolute bottom-2 left-2 bg-white/90 px-3 py-1 text-xs font-bold rounded-full shadow text-emerald-700 border border-emerald-100 flex items-center gap-1 backdrop-blur-sm">
+                            <MapPin className="w-3 h-3" />
+                            正在顯示: {activePoint.title}
+                        </div>
                     </div>
                     
-                    <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-xl" style={{ maxHeight: '80vh' }}>
-                        <polyline 
-                            points={points.map(p => {
-                                const { x, y } = normalize(p.coords[0], p.coords[1]);
-                                return `${x},${y}`;
-                            }).join(' ')}
-                            fill="none"
-                            stroke="#cbd5e1"
-                            strokeWidth="1.5"
-                            strokeDasharray="4"
-                            strokeLinecap="round"
-                        />
-
-                        {points.map((point) => {
-                            const { x, y } = normalize(point.coords[0], point.coords[1]);
-                            const isHotel = point.type === 'hotel';
-                            
-                            return (
-                                <g key={point.id} className="cursor-pointer group">
-                                    <circle cx={x} cy={y} r="4" fill="white" stroke={isHotel ? '#4f46e5' : '#ef4444'} strokeWidth="0.8" />
-                                    <circle cx={x} cy={y} r="2" fill={isHotel ? '#4f46e5' : '#ef4444'} />
-                                    <foreignObject x={x - 15} y={y + 5} width="30" height="20" className="overflow-visible">
-                                        <div className="flex flex-col items-center">
-                                            <span className={`text-[4px] px-1 rounded shadow-sm whitespace-nowrap font-bold 
-                                                ${isHotel ? 'bg-indigo-600 text-white' : 'bg-white text-gray-700'}`}>
-                                                {point.number}
-                                            </span>
-                                        </div>
-                                    </foreignObject>
-                                </g>
-                            );
-                        })}
-                    </svg>
-                    
-                    <div className="absolute bottom-4 left-4 right-4 max-h-[30%] overflow-y-auto bg-white/90 backdrop-blur rounded-lg shadow-lg border border-gray-100 p-3">
-                        <h4 className="text-xs font-bold text-gray-500 mb-2 uppercase tracking-wider">地圖索引</h4>
-                        <div className="space-y-2">
-                            {points.map(p => (
-                                <a 
+                    <div className="flex-1 overflow-y-auto p-4 bg-white">
+                        <h4 className="text-xs font-bold text-gray-500 mb-3 uppercase tracking-wider sticky top-0 bg-white/95 backdrop-blur py-2 border-b z-10 flex items-center justify-between">
+                            <span>選擇地點以切換視角</span>
+                            <span className="text-[10px] bg-gray-100 px-2 py-0.5 rounded text-gray-400">共 {points.length} 個地點</span>
+                        </h4>
+                        <div className="space-y-2 pb-4">
+                            {points.map((p) => (
+                                <button 
                                     key={p.id}
-                                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.location)}`}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="flex items-center gap-2 text-xs p-1 hover:bg-gray-100 rounded transition"
+                                    onClick={() => setActivePoint(p)}
+                                    className={`w-full flex items-center gap-3 p-3 rounded-xl border transition-all text-left group
+                                        ${activePoint.id === p.id 
+                                            ? 'bg-emerald-50 border-emerald-500 shadow-sm ring-1 ring-emerald-500' 
+                                            : 'bg-white border-gray-100 hover:bg-gray-50 hover:border-gray-300'}`}
                                 >
-                                    <span className="flex-shrink-0 w-4 h-4 rounded-full bg-red-100 text-red-600 flex items-center justify-center font-bold text-[9px] border border-red-200">
+                                    <span className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs transition-colors
+                                        ${activePoint.id === p.id ? 'bg-emerald-500 text-white' : 'bg-gray-100 text-gray-500 group-hover:bg-gray-200'}`}>
                                         {p.number}
                                     </span>
-                                    <span className="truncate flex-1 font-medium text-gray-700">{p.title}</span>
-                                    <ExternalLink className="w-3 h-3 text-gray-400" />
-                                </a>
+                                    <div className="flex-1 min-w-0">
+                                        <p className={`text-sm font-bold truncate ${activePoint.id === p.id ? 'text-emerald-800' : 'text-gray-700'}`}>
+                                            {p.title}
+                                        </p>
+                                        <p className="text-xs text-gray-400 truncate flex items-center gap-1 mt-0.5">
+                                            <MapPin className="w-3 h-3" /> {p.location}
+                                        </p>
+                                    </div>
+                                    <ExternalLink className={`w-4 h-4 transition-colors ${activePoint.id === p.id ? 'text-emerald-500' : 'text-gray-300 group-hover:text-gray-400'}`} />
+                                </button>
                             ))}
                         </div>
                     </div>
@@ -587,7 +561,7 @@
                             </div>
                         )}
 
-                        {view === 'map' && <SchematicMap points={allMapPoints} />}
+                        {view === 'map' && <GoogleMapTab points={allMapPoints} />}
 
                         {view === 'gallery' && <GalleryView itineraryData={itineraryData} />}
                     </div>
