@@ -2,7 +2,8 @@ import { GoogleGenAI } from "@google/genai";
 import { WeatherData } from "../types";
 
 // Initialize AI with safe fallback if key is missing (though prompt assumes it exists)
-const apiKey = process.env.API_KEY || "";
+// We check typeof process to ensure we don't crash in browser environments without node polyfills
+const apiKey = (typeof process !== 'undefined' && process.env && process.env.API_KEY) || "";
 const ai = new GoogleGenAI({ apiKey });
 
 // Fallback data for Macau in December (Average stats) to ensure UI never breaks
