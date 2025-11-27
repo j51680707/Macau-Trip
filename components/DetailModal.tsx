@@ -1,6 +1,6 @@
 import React from 'react';
-import { X, MapPin, Ticket, AlertCircle } from 'lucide-react';
-import { ItineraryItem } from '../types';
+import { X, MapPin, Ticket, AlertCircle, FileText } from 'lucide-react';
+import { ItineraryItem, ActivityType } from '../types';
 
 interface DetailModalProps {
   item: ItineraryItem | null;
@@ -55,9 +55,16 @@ const DetailModal: React.FC<DetailModalProps> = ({ item, isOpen, onClose }) => {
               {item.details.bookingCode && (
                 <div className="bg-gray-50 p-4 rounded-xl border border-gray-100 flex items-center justify-between">
                   <div className="flex items-center">
-                    <Ticket className="text-secondary mr-3" size={24} />
+                    {/* Conditional Icon based on Activity Type */}
+                    {item.type === ActivityType.FLIGHT ? (
+                      <Ticket className="text-secondary mr-3" size={24} />
+                    ) : (
+                      <FileText className="text-gray-400 mr-3" size={24} />
+                    )}
                     <div>
-                      <div className="text-xs text-gray-500 uppercase font-semibold">訂位/票務代號</div>
+                      <div className="text-xs text-gray-500 uppercase font-semibold">
+                        {item.type === ActivityType.FLIGHT ? '電子機票號碼' : '訂位代號'}
+                      </div>
                       <div className="font-mono text-lg font-bold text-gray-800">{item.details.bookingCode}</div>
                     </div>
                   </div>
