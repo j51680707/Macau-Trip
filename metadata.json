@@ -1,0 +1,7 @@
+{
+  "name": "Copy of Macau Walker",
+  "description": "A smart travel companion for Taiwanese tourists visiting Macau, featuring AI-powered weather, interactive timelines, and maps.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
