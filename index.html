@@ -8,15 +8,8 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- React & ReactDOM -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    
-    <!-- Babel for JSX -->
+    <!-- Babel for JSX (Configured for ES Modules) -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    
-    <!-- Lucide Icons (React Version) -->
-    <script src="https://unpkg.com/lucide-react@0.263.1/dist/umd/lucide-react.min.js"></script>
 
     <style>
         /* Custom scrollbar for webkit */
@@ -42,17 +35,20 @@
 <body>
     <div id="root"></div>
 
-    <script type="text/babel">
-        const { useState, useEffect, useMemo } = React;
+    <!-- Script type set to "text/babel" with data-type="module" for ESM support -->
+    <script type="text/babel" data-type="module">
+        // Import Dependencies from esm.sh (Reliable CDN for React & Lucide)
+        import React, { useState, useEffect, useMemo } from 'https://esm.sh/react@18.2.0';
+        import { createRoot } from 'https://esm.sh/react-dom@18.2.0/client';
         
-        // Destructure Icons from global lucideReact object
-        const { 
+        // Import Lucide Icons directly
+        import { 
             Plane, Hotel, Utensils, Camera, MapPin, 
-            Info, X, Calendar, Map: MapIcon, 
+            Info, X, Calendar, Map as MapIcon, 
             Navigation, Sun, Cloud, CloudRain, Smartphone,
             ShoppingBag, Bed, DollarSign, Leaf, ExternalLink,
-            Image: ImageIcon, Heart, Star, CloudLightning, Wind
-        } = lucideReact;
+            Image as ImageIcon, Heart, Star, CloudLightning, Wind
+        } from 'https://esm.sh/lucide-react@0.263.1';
 
         // --- Itinerary Data ---
         const itineraryData = {
@@ -718,7 +714,7 @@
             );
         }
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
+        const root = createRoot(document.getElementById('root'));
         root.render(<MacauTripApp />);
     </script>
 </body>
