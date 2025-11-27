@@ -31,22 +31,23 @@ export const getRealtimeWeather = async (location: string): Promise<WeatherData>
     const text = response.text || "";
     
     // Check if we have grounding chunks to confirm valid source
-    const chunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks;
+    // (Optional check, but we mainly rely on regex parsing of the text)
+    // const chunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks;
     
     // Attempt to parse even if grounding metadata is partial, as text might still be valid
     if (text) {
-        // Regex to extract values based on the requested format
-        const tempMatch = text.match(/Temp:\s*([^\s,]+)/i);
+        // Updated Regex to robustly capture values including spaces (e.g. "25 °C", "60 %")
+        const tempMatch = text.match(/Temp:\s*([^,]+)/i);
         const condMatch = text.match(/Condition:\s*([^,]+)/i);
-        const humMatch = text.match(/Humidity:\s*([^\s,]+)/i);
+        const humMatch = text.match(/Humidity:\s*([^,]+)/i);
         const windMatch = text.match(/Wind:\s*([^,]+)/i);
 
         // Only return if we found at least the temperature, otherwise fallback
         if (tempMatch) {
             return {
-                temp: tempMatch[1],
+                temp: tempMatch[1].trim(),
                 condition: condMatch ? condMatch[1].trim() : "Partly Cloudy",
-                humidity: humMatch ? humMatch[1] : "75%",
+                humidity: humMatch ? humMatch[1].trim() : "75%",
                 windSpeed: windMatch ? windMatch[1].trim() : "12 km/h",
                 location: location
             };
