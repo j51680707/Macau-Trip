@@ -110,7 +110,8 @@
             Navigation, Sun, Cloud, CloudRain, Smartphone,
             ShoppingBag, Bed, DollarSign, Leaf, ExternalLink,
             Image as ImageIcon, Heart, Star, CloudLightning, Wind,
-            ThermometerSun, CalendarClock, ChevronUp, ChevronDown
+            ThermometerSun, CalendarClock, ChevronUp, ChevronDown,
+            Users, Gift, AlertTriangle, ChefHat, Wine
         } from 'https://esm.sh/lucide-react@0.263.1';
 
         // --- Configuration ---
@@ -170,122 +171,187 @@
             1: [
                 {
                     id: 'd1-1',
-                    time: '10:00',
-                    title: '抵達澳門',
+                    time: '11:25',
+                    title: '抵達澳門 (MFM)',
                     location: '澳門國際機場 (MFM)',
                     type: 'flight',
                     coords: [22.1583, 113.5933],
-                    description: '航班 NX631 (08:15 TPE - 10:05 MFM)。領取行李後，分兩台計程車前往十六浦。',
-                    details: { flight: 'NX631 (08:15-10:05)', terminal: 'Arrivals', notes: '記得開啟漫遊或更換 SIM 卡' },
-                    imageParams: 'airport,travel'
+                    description: '領取行李，入境大廳集合。',
+                    details: { flight: 'NX631', notes: '開啟漫遊' },
+                    imageParams: 'airport,arrival'
                 },
                 {
                     id: 'd1-2',
-                    time: '12:30',
-                    title: '飯店入住/寄放行李',
-                    location: '澳門十六浦索菲特',
-                    type: 'hotel',
-                    coords: [22.1965, 113.5367],
-                    description: '辦理入住手續，寄放行李。位於內港歷史區。',
-                    details: { bookingRef: 'SOF-882193', address: '澳門巴素打爾古街', checkIn: '15:00' },
-                    imageParams: 'luxury hotel,lobby'
+                    time: '12:00',
+                    title: '接駁車往新葡京',
+                    location: '新葡京酒店',
+                    type: 'transport',
+                    coords: [22.1908, 113.5421],
+                    description: '搭乘新葡京免費接駁車。',
+                    details: { transport: '免費接駁車' },
+                    imageParams: 'grand lisboa macau'
                 },
                 {
                     id: 'd1-3',
-                    time: '13:30',
-                    title: '午餐：粵式飲茶',
-                    location: '樂軒華粵菜餐廳 (18F)',
+                    time: '12:45',
+                    title: '瑪嘉烈蛋塔',
+                    location: "Margaret's Café e Nata",
                     type: 'food',
-                    coords: [22.1965, 113.5367],
-                    description: '飯店直達 18 樓，享用精緻點心與 270 度江景。',
-                    details: { reservation: 'Mr. Chen (6 pax)', dietary: '1位素食 (提供素粉果/炒飯)' },
-                    imageParams: 'dim sum,cantonese food'
+                    coords: [22.1919, 113.5415],
+                    description: '行動策略：4 人在新葡京大堂顧行李，2 人去巷內買蛋塔。',
+                    details: { notes: '素食注意：酥皮含油，請斟酌' },
+                    imageParams: 'egg tart'
                 },
                 {
                     id: 'd1-4',
-                    time: '15:00',
-                    title: '文青散策：望德堂區',
-                    location: '婆仔屋 / 瘋堂斜巷',
-                    type: 'camera',
-                    coords: [22.1968, 113.5458],
-                    description: '避開大三巴人潮，探索葡式建築與文創小店。',
-                    details: { highlights: ['婆仔屋老樟樹', '仁慈堂婆仔屋', '葡國碎石路'], transport: '計程車約 MOP 30' },
-                    imageParams: 'portuguese architecture,macau street'
+                    time: '13:30',
+                    title: '十六浦寄放行李',
+                    location: '澳門十六浦索菲特',
+                    type: 'hotel',
+                    coords: [22.1965, 113.5367],
+                    description: '搭計程車前往十六浦，寄放行李 (先不進房)。',
+                    details: { transport: '計程車' },
+                    imageParams: 'sofitel macau'
                 },
                 {
                     id: 'd1-5',
+                    time: '14:00',
+                    title: '午餐：婆仔屋',
+                    location: 'ALBERGUE 1601',
+                    type: 'food',
+                    coords: [22.1968, 113.5458],
+                    description: '百年葡式建築與老樟樹，氣氛極佳。',
+                    details: { food: '葡國菜', vegetarian: '需預訂 (雜菜咖哩/義大利麵)' },
+                    imageParams: 'portuguese architecture'
+                },
+                {
+                    id: 'd1-6',
+                    time: '15:30',
+                    title: '觀光分流',
+                    location: '大三巴牌坊 / 瘋堂斜巷',
+                    type: 'camera',
+                    coords: [22.1976, 113.5421],
+                    description: 'A組(新手)：婆仔屋→大三巴→議事亭。B組(老手)：瘋堂斜巷喝咖啡。',
+                    details: { groupA: '蔡、沈', groupB: '其餘 4 人' },
+                    imageParams: 'ruins of st paul'
+                },
+                {
+                    id: 'd1-7',
+                    time: '17:30',
+                    title: '晚餐大移動 (兵分兩路)',
+                    location: '上葡京 / 澳門銀河',
+                    type: 'transport',
+                    coords: [22.1491, 113.5539],
+                    description: '上葡京組 (4人) 搭車直達上葡京；名廚都匯組 (2人) 搭車直達澳門銀河。',
+                    details: { notes: '分兩台計程車' },
+                    imageParams: 'macau taxi'
+                },
+                {
+                    id: 'd1-8',
                     time: '18:00',
-                    title: '晚餐：自助山 Buffet',
-                    location: '上葡京綜合度假村',
+                    title: '晚餐：路氹頂級自助餐',
+                    location: '自助山 / 名廚都匯',
                     type: 'food',
                     coords: [22.1408, 113.5714],
-                    description: '澳門自助餐天花板！戶外燒烤區與生猛海鮮。',
-                    details: { reservation: '18:00 (4 pax)', notes: '另外2位自由活動', transport: '需跨海，車程約 25 分鐘' },
-                    imageParams: 'seafood buffet,grill'
+                    description: '上葡京組：自助山 The Grand Buffet。名廚都匯組：Urban Kitchen。',
+                    details: { reservation: '請確認訂位資訊' },
+                    imageParams: 'buffet,seafood'
+                },
+                 {
+                    id: 'd1-9',
+                    time: '21:00',
+                    title: '返回飯店休息',
+                    location: '澳門十六浦索菲特',
+                    type: 'hotel',
+                    coords: [22.1965, 113.5367],
+                    description: '兩組分別搭車返回十六浦索菲特集合。',
+                    imageParams: 'hotel room'
                 }
             ],
             2: [
                 {
                     id: 'd2-1',
-                    time: '08:30',
+                    time: '09:00',
                     title: '飯店早餐',
                     location: '十六浦海風餐廳',
                     type: 'food',
                     coords: [22.1965, 113.5367],
-                    description: '享用飯店包含的自助早餐，隨後退房。',
-                    details: { notes: 'Check-out 時間 11:00 前' },
-                    imageParams: 'breakfast buffet,croissant'
+                    description: '享用索菲特海風餐廳自助早餐。',
+                    imageParams: 'breakfast buffet'
                 },
                 {
                     id: 'd2-2',
-                    time: '11:30',
-                    title: '午餐 & 官也街',
-                    location: 'La Famiglia 葡意料理',
-                    type: 'food',
-                    coords: [22.1539, 113.5574],
-                    description: '位於氹仔舊城區，適合多人聚餐。必買安德魯蛋塔。',
-                    details: { reservation: '11:30 (6 pax)', dietary: '可做素義大利麵', mustBuy: ['安德魯蛋塔', '晃記餅家', '莫義記雪糕'] },
-                    imageParams: 'egg tart,macau food'
+                    time: '11:00',
+                    title: '退房 (Check-out)',
+                    location: '澳門十六浦索菲特',
+                    type: 'hotel',
+                    coords: [22.1965, 113.5367],
+                    description: '辦理退房手續。',
+                    imageParams: 'hotel reception'
                 },
                 {
                     id: 'd2-3',
-                    time: '14:30',
-                    title: '分流：朋友送機',
-                    location: '澳門國際機場',
-                    type: 'transport',
-                    coords: [22.1583, 113.5933],
-                    description: '一位朋友前往機場搭乘 NX618 (17:35-19:25)。其餘步行回瑞吉。',
-                    details: { flight: 'NX618 (17:35-19:25)', notes: '建議 15:00 前離開官也街' },
-                    imageParams: 'airport terminal'
-                },
-                {
-                    id: 'd2-4',
-                    time: '15:30',
-                    title: '入住瑞吉酒店',
+                    time: '11:30',
+                    title: '移動至瑞吉寄行李',
                     location: '澳門瑞吉酒店',
                     type: 'hotel',
                     coords: [22.1467, 113.5669],
-                    description: '體驗管家服務，參觀倫敦人水晶金殿。',
-                    details: { bookingRef: 'REG-991022', notes: '請管家準備咖啡/茶', checkIn: '15:00' },
-                    imageParams: 'luxury bedroom,butler'
+                    description: '大移動：搭車去路氹瑞吉酒店，寄放所有行李。',
+                    imageParams: 'st regis macau'
+                },
+                {
+                    id: 'd2-4',
+                    time: '12:15',
+                    title: '午餐：葡薏園',
+                    location: 'Tapas de Portugal',
+                    type: 'food',
+                    coords: [22.1535, 113.5568],
+                    description: '創意葡式小食，適合多人分享。地點：氹仔舊城區木鐸街。',
+                    details: { mustEat: '薯絲馬介休、烤乳豬', vegetarian: '奶油炒野菌、牛肝菌燉飯' },
+                    imageParams: 'tapas food'
                 },
                 {
                     id: 'd2-5',
-                    time: '19:00',
-                    title: '晚餐：客房餐飲 (MOP 800)',
+                    time: '13:45',
+                    title: '安德魯餅店 (官也街)',
+                    location: '官也街',
+                    type: 'food',
+                    coords: [22.1539, 113.5574],
+                    description: '就在餐廳轉角，買熱騰騰的蛋塔！順路買伴手禮。',
+                    details: { mustBuy: '安德魯蛋塔', souvenir: '鉅記/英記' },
+                    imageParams: 'egg tart'
+                },
+                {
+                    id: 'd2-6',
+                    time: '14:15',
+                    title: '送機：廖姓友人',
+                    location: '澳門國際機場',
+                    type: 'transport',
+                    coords: [22.1583, 113.5933],
+                    description: '廖姓友人帶著隨身行李與蛋塔，從官也街搭計程車去機場 (NX618 17:25)。',
+                    details: { flight: 'NX618 (17:25起飛)', others: '其餘5人返回瑞吉入住' },
+                    imageParams: 'airport terminal'
+                },
+                {
+                    id: 'd2-7',
+                    time: '15:00',
+                    title: '瑞吉 Check-in',
                     location: '澳門瑞吉酒店',
+                    type: 'hotel',
+                    coords: [22.1467, 113.5669],
+                    description: '辦理入住，享用管家服務，自由活動。',
+                    imageParams: 'butler service'
+                },
+                {
+                    id: 'd2-8',
+                    time: '18:30',
+                    title: '晚餐：房內美食派對',
+                    location: '瑞吉酒店客房',
                     type: 'food',
                     coords: [22.1467, 113.5669],
-                    description: '利用房內 MOP 800 額度，享受私密晚餐。已根據您的菜單圖片整理推薦。',
-                    details: { 
-                        credit: '每房 MOP 800 額度', 
-                        westernMain: '澳洲和牛扒(548)、和牛漢堡(248)',
-                        asianMain: '龍蝦雲吞麵(188)、海鮮伊麵(268)',
-                        vegetarian: '蘑菇湯(138)、芝士胡椒意粉(218)、時令蔬菜(88)',
-                        sweet: '葡式焦糖布甸(118)、紐約芝士蛋糕(118)',
-                        notes: '撥打 "In-Room Dining" 點餐'
-                    },
-                    imageParams: 'fine dining,steak,lobster',
+                    description: 'In-Room Dining 額度 1600 MOP (5人)。',
+                    details: { recommend: '瑞吉漢堡、海南雞飯、鮮蝦雲吞麵、素食特餐' },
+                    imageParams: 'room service',
                     menuHighlights: [
                         { name: '澳洲和牛扒', price: '548 MOP', tag: '奢華首選', imgParams: 'wagyu steak' },
                         { name: '和牛漢堡', price: '248 MOP', tag: '人氣推薦', imgParams: 'burger' },
@@ -303,42 +369,48 @@
                     location: '雅舍 The Manor',
                     type: 'food',
                     coords: [22.1467, 113.5669],
-                    description: '享用著名的現點現做主餐早餐（龍蝦蛋、牛排蛋）。',
-                    details: { notes: '素食可點酪梨吐司/松露炒蛋' },
-                    imageParams: 'eggs benedict'
+                    description: '享用瑞吉雅舍半自助早餐。',
+                    imageParams: 'fine dining breakfast'
                 },
                 {
                     id: 'd3-2',
                     time: '11:00',
-                    title: '路環漁村慢活',
+                    title: '路環漁村 & 安德魯總店',
                     location: '路環聖方濟各聖堂',
                     type: 'camera',
                     coords: [22.1186, 113.5516],
-                    description: '感受漁村寧靜，參觀教堂與圖書館。',
-                    details: { transport: '計程車約 10 分鐘', highlights: ['安德魯總店', '十月初五馬路'] },
-                    imageParams: 'coloane macau,village'
+                    description: '漫步十月初五馬路，買蛋塔帶回台灣。',
+                    imageParams: 'coloane village'
                 },
                 {
                     id: 'd3-3',
                     time: '12:00',
-                    title: '午餐：雅憩花園餐廳',
-                    location: '路環市區',
+                    title: '午餐：雅憩花園',
+                    location: '雅憩花園餐廳',
                     type: 'food',
                     coords: [22.1188, 113.5519],
-                    description: '教堂前大樹下的風味大排檔。',
-                    details: { recommend: ['西洋烚菜', '炒雜菜', '海鮮'], notes: '環境舒適愜意' },
-                    imageParams: 'outdoor dining,seafood'
+                    description: '大樹下葡國菜 (含素食選項)。',
+                    imageParams: 'outdoor dining'
                 },
                 {
                     id: 'd3-4',
-                    time: '14:30',
-                    title: '最後採買/前往機場',
-                    location: '四季名店',
-                    type: 'shopping',
-                    coords: [22.1469, 113.5644],
-                    description: '返回路氹做最後購物，隨後前往機場搭乘 NX618 (17:35-19:25)。',
-                    details: { flight: 'NX618 (17:35-19:25)', transport: '瑞吉至機場約 10 分鐘' },
-                    imageParams: 'duty free shop'
+                    time: '15:15',
+                    title: '前往機場',
+                    location: '澳門國際機場',
+                    type: 'transport',
+                    coords: [22.1583, 113.5933],
+                    description: '搭乘倫敦人接駁車或計程車前往機場。',
+                    imageParams: 'airport bus'
+                },
+                {
+                    id: 'd3-5',
+                    time: '17:25',
+                    title: '返台',
+                    location: 'NX618',
+                    type: 'flight',
+                    coords: [22.1583, 113.5933],
+                    description: '搭乘 NX618 返回台北。',
+                    imageParams: 'airplane'
                 }
             ]
         };
@@ -540,6 +612,193 @@
                                 );
                             })}
                         </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // --- Food Guide Component (New) ---
+        const FoodGuideView = () => {
+            return (
+                <div className="p-4 pb-24 space-y-6">
+                    
+                    {/* Restaurant 1: Le Chinois */}
+                    <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100">
+                        <div className="bg-amber-50 p-4 border-b border-amber-100 flex justify-between items-center">
+                             <div>
+                                <h3 className="text-lg font-bold text-amber-900 flex items-center gap-2">
+                                   <ChefHat className="w-5 h-5 text-amber-600" /> 樂軒華粵菜餐廳 (Le Chinois)
+                                </h3>
+                                <p className="text-xs text-amber-700 mt-1">十六浦索菲特 18F | 精緻粵菜</p>
+                             </div>
+                        </div>
+                        
+                        <div className="p-4 space-y-4">
+                            <div>
+                                <h4 className="text-sm font-bold text-gray-700 mb-2 flex items-center gap-1">🥟 必點港式點心 (Dim Sum)</h4>
+                                <ul className="space-y-2 text-xs text-gray-600">
+                                    <li><span className="font-bold text-gray-800">黑松露蝦餃皇</span>：招牌必點，松露香氣濃郁。</li>
+                                    <li><span className="font-bold text-gray-800">蟹籽燒賣皇</span>：經典紮實，豬肉與蝦仁比例完美。</li>
+                                    <li><span className="font-bold text-gray-800">脆皮鮮蝦腸粉</span>：外軟內酥，口感層次豐富。</li>
+                                </ul>
+                            </div>
+                             <div>
+                                <h4 className="text-sm font-bold text-gray-700 mb-2 flex items-center gap-1">🍖 燒味 & 熱菜</h4>
+                                <ul className="space-y-2 text-xs text-gray-600">
+                                    <li><span className="font-bold text-gray-800">蜜汁黑豚叉燒</span>：鎮店之寶，焦香帶甜。</li>
+                                    <li><span className="font-bold text-gray-800">法蔥蒜片牛柳粒</span>：鮮嫩多汁，蒜片金黃酥脆。</li>
+                                </ul>
+                            </div>
+                             <div className="bg-green-50 p-3 rounded-lg border border-green-100">
+                                <h4 className="text-sm font-bold text-green-800 mb-2 flex items-center gap-1">
+                                    <Leaf className="w-4 h-4" /> 素食專區 (沈姓友人專屬)
+                                </h4>
+                                <ul className="space-y-2 text-xs text-green-700">
+                                    <li><span className="font-bold">黑松露野菌餃</span>：素點心首選，口感爽脆。</li>
+                                    <li><span className="font-bold">上素蒸粉果</span>：潮州粉果素食版，口感豐富。</li>
+                                    <li><span className="font-bold">鼎湖上素</span>：用上湯煨煮高級菌菇，清爽養生。</li>
+                                    <li><span className="font-bold">豉油皇炒麵</span>：備註「走蔥蒜、純素」，鑊氣十足。</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 className="text-sm font-bold text-gray-700 mb-2 flex items-center gap-1">🍮 甜點</h4>
+                                <p className="text-xs text-gray-600"><span className="font-bold text-gray-800">楊枝甘露</span>：芒果香濃，完美句點。</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Restaurant 2: Tapas de Portugal */}
+                    <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100">
+                        <div className="bg-red-50 p-4 border-b border-red-100 flex justify-between items-center">
+                             <div>
+                                <h3 className="text-lg font-bold text-red-900 flex items-center gap-2">
+                                   <Wine className="w-5 h-5 text-red-600" /> Tapas de Portugal (葡薏園)
+                                </h3>
+                                <p className="text-xs text-red-700 mt-1">氹仔官也街 | 創意葡式小食</p>
+                             </div>
+                        </div>
+                        
+                        <div className="p-4 space-y-4">
+                            <div className="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                                <h4 className="text-sm font-bold text-gray-700 mb-2">📝 6 人點餐懶人包</h4>
+                                <ul className="text-xs text-gray-600 space-y-1">
+                                    <li>• <span className="font-bold">Tapas:</span> 葡式炒蜆、炸馬介休球(6顆)、火焰臘腸</li>
+                                    <li>• <span className="font-bold text-green-600">Veg Tapas:</span> 花園小魚 (炸四季豆)、炒野菌</li>
+                                    <li>• <span className="font-bold">Mains:</span> 烤乳豬 (1份)、濕式海鮮飯 (1份)</li>
+                                    <li>• <span className="font-bold text-green-600">Veg Main:</span> 黑松露牛肝菌燉飯 (1份)</li>
+                                    <li>• <span className="font-bold">Drinks:</span> Sangria 水果酒 (一壺)</li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h4 className="text-sm font-bold text-gray-700 mb-2 flex items-center gap-1">🍴 必點小食 (Tapas)</h4>
+                                <ul className="space-y-2 text-xs text-gray-600">
+                                    <li><span className="font-bold text-gray-800">葡式炒蜆</span>：必點招牌，麵包沾湯汁是靈魂。</li>
+                                    <li><span className="font-bold text-gray-800">葡式烤肉腸</span>：上桌有火焰秀，皮脆油香。</li>
+                                    <li className="text-green-700"><span className="font-bold">花園小魚</span>：其實是炸四季豆！葡式天婦羅，素食必吃。</li>
+                                </ul>
+                            </div>
+                             <div>
+                                <h4 className="text-sm font-bold text-gray-700 mb-2 flex items-center gap-1">🍖 主菜 (Mains)</h4>
+                                <ul className="space-y-2 text-xs text-gray-600">
+                                    <li><span className="font-bold text-gray-800">葡式烤乳豬</span>：皮像餅乾一樣脆，肉質嫩滑。</li>
+                                    <li><span className="font-bold text-gray-800">濕式海鮮飯</span>：帶湯的葡式飯，鮮味濃郁。</li>
+                                </ul>
+                            </div>
+                             <div className="bg-green-50 p-3 rounded-lg border border-green-100">
+                                <h4 className="text-sm font-bold text-green-800 mb-2 flex items-center gap-1">
+                                    <Leaf className="w-4 h-4" /> 素食主餐 (沈姓友人專屬)
+                                </h4>
+                                <p className="text-xs text-green-700 mb-1"><span className="font-bold">黑松露牛肝菌燉飯</span>：米芯口感適中，奶香濃郁。</p>
+                                <p className="text-[10px] text-green-600 opacity-80">*備註：確認去洋蔥/蒜 (視需求)，並確認高湯基底。</p>
+                            </div>
+                            <div>
+                                <h4 className="text-sm font-bold text-gray-700 mb-2 flex items-center gap-1">🍮 甜點</h4>
+                                <p className="text-xs text-gray-600"><span className="font-bold text-gray-800">木糠布丁</span>、<span className="font-bold text-gray-800">焦糖雞蛋布丁</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // --- Souvenir View Component ---
+        const SouvenirView = () => {
+            const souvenirs = [
+                {
+                    id: 1,
+                    name: '杏仁餅 (Almond Cookies)',
+                    brands: '鉅記手信、英記餅家',
+                    vegNote: '素食者(沈姓友人)專用：購買前請確認包裝標示「植物油」或「素食」。（傳統口味多含豬油）',
+                    icon: '🍪',
+                    warning: null
+                },
+                {
+                    id: 2,
+                    name: '蛋捲 / 鳳凰卷',
+                    brands: '鉅記、晃記餅家',
+                    vegNote: '素食者：僅可購買原味蛋捲或無肉鬆的產品。',
+                    icon: '🌯',
+                    warning: '嚴重警告：含「肉鬆」的鳳凰卷 禁止攜帶入境台灣，請勿購買回台。'
+                },
+                {
+                    id: 3,
+                    name: '葡式罐頭 (沙甸魚/鮪魚)',
+                    brands: '老人牌 (Porthos)',
+                    desc: '推薦橄欖油浸口味最經典。地點：官也街葡式選物店 (O-Moon 附近) 或超市。',
+                    icon: '🐟',
+                    warning: null
+                },
+                {
+                    id: 4,
+                    name: '紐結糖 / 花生糖',
+                    brands: '車厘哥夫 (官也街老店)、鉅記',
+                    vegNote: '素食：大多為奶素，適合沈姓友人。',
+                    icon: '🍬',
+                    warning: null
+                }
+            ];
+
+            return (
+                <div className="p-4 pb-24 space-y-4">
+                    <div className="bg-orange-50 border border-orange-100 p-4 rounded-xl shadow-sm mb-2">
+                         <h2 className="text-lg font-bold text-orange-800 flex items-center gap-2 mb-2">
+                            <Gift className="w-5 h-5" /> 必買伴手禮清單
+                         </h2>
+                         <p className="text-xs text-orange-700">
+                            為大家整理的採購攻略，特別標註素食友善選項與入境法規提醒。
+                         </p>
+                    </div>
+
+                    <div className="space-y-4">
+                        {souvenirs.map(item => (
+                            <div key={item.id} className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+                                <div className="flex items-start gap-3">
+                                    <div className="text-2xl bg-gray-50 w-12 h-12 flex items-center justify-center rounded-full shrink-0">
+                                        {item.icon}
+                                    </div>
+                                    <div className="flex-1">
+                                        <h3 className="font-bold text-gray-800 text-lg mb-1">{item.name}</h3>
+                                        <p className="text-sm text-gray-600 mb-2"><span className="font-bold text-gray-500">推薦品牌/地點：</span>{item.brands}</p>
+                                        {item.desc && <p className="text-sm text-gray-600 mb-2">{item.desc}</p>}
+                                        
+                                        {item.vegNote && (
+                                            <div className="bg-green-50 p-2 rounded-lg border border-green-100 text-xs text-green-800 flex gap-2 items-start mt-2">
+                                                <Leaf className="w-3 h-3 mt-0.5 shrink-0" />
+                                                <span>{item.vegNote}</span>
+                                            </div>
+                                        )}
+
+                                        {item.warning && (
+                                            <div className="bg-red-50 p-2 rounded-lg border border-red-100 text-xs text-red-800 flex gap-2 items-start mt-2 font-bold">
+                                                <AlertTriangle className="w-3 h-3 mt-0.5 shrink-0" />
+                                                <span>{item.warning}</span>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             );
@@ -759,103 +1018,101 @@
                 <div className="flex flex-col h-screen bg-slate-50 font-sans max-w-md mx-auto relative shadow-2xl overflow-hidden">
                     
                     {/* --- Top Bar / Hero Section --- */}
-                    {view !== 'amap' && view !== 'googleMap' && (
-                        <div className={`relative shadow-lg z-10 shrink-0 transition-all duration-300 ease-in-out ${isHeaderExpanded ? 'rounded-b-3xl' : ''}`}>
-                            
-                            {/* Background Image Layer */}
-                            <div className="absolute inset-0 z-0 overflow-hidden rounded-b-3xl bg-amber-100">
-                                 {/* User uploaded image with fallback */}
-                                 <img 
-                                    src="./Macau_Banner.png" 
-                                    onError={(e) => {
-                                        e.target.onerror = null; 
-                                        e.target.src="https://placehold.co/800x600/064e3b/10b981.png?text=Macau+View";
-                                    }}
-                                    alt="Header Background" 
-                                    className="w-full h-full object-cover opacity-90" 
-                                 />
-                                 {/* Warm Light Gradient Overlay for Golden Macau feel */}
-                                 <div className="absolute inset-0 bg-gradient-to-b from-amber-100/30 via-amber-50/80 to-white/95" />
-                            </div>
-
-                            {/* Content Layer */}
-                            <div className={`relative z-10 text-amber-950 ${isHeaderExpanded ? 'p-6 pt-10' : 'p-2 pt-8 pb-3'}`}>
-                                
-                                {/* Toggle Button */}
-                                <button 
-                                    onClick={() => setIsHeaderExpanded(!isHeaderExpanded)}
-                                    className="absolute bottom-[-12px] left-1/2 transform -translate-x-1/2 bg-amber-900 text-white rounded-full p-1 shadow-md border border-amber-800 z-20 hover:scale-110 transition-transform"
-                                >
-                                    {isHeaderExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                                </button>
-
-                                {isHeaderExpanded ? (
-                                    <>
-                                        <div className="flex justify-between items-start mb-4 animate-in fade-in zoom-in duration-300">
-                                            <div>
-                                                <h1 className="text-2xl font-bold tracking-tight drop-shadow-sm text-amber-950">澳門奢華慢活之旅</h1>
-                                                <div className="flex items-center gap-2 mt-1 opacity-90 text-sm font-medium text-amber-900">
-                                                    <MapPin className="w-4 h-4" />
-                                                    <span>Macau, China</span>
-                                                </div>
-                                            </div>
-                                            <button 
-                                                onClick={() => setShowTips(true)}
-                                                className="bg-white/60 p-2 rounded-full hover:bg-white/80 text-amber-800 transition shadow-sm backdrop-blur-sm border border-amber-200/50"
-                                            >
-                                                <Info className="w-5 h-5" />
-                                            </button>
-                                        </div>
-                                        
-                                        <div className="flex items-end justify-between animate-in slide-in-from-top-2 duration-300">
-                                            <div>
-                                                <p className="text-amber-800 text-sm font-bold uppercase tracking-wider">Day {currentDay}</p>
-                                                <p className="text-3xl font-bold text-amber-950">{currentDateStr}</p>
-                                            </div>
-                                            {/* Enhanced Weather Widget */}
-                                            <div className="flex flex-col items-end">
-                                                <div className="flex items-center gap-2 bg-white/60 px-3 py-1.5 rounded-lg backdrop-blur-md shadow-sm border border-white/40 relative overflow-hidden group">
-                                                    <div className={`absolute top-0 right-0 px-1 py-[1px] text-[8px] font-bold uppercase rounded-bl shadow-sm
-                                                        ${weather.isForecast ? 'bg-orange-500 text-white' : 'bg-blue-500 text-white'}`}>
-                                                        {weather.isForecast ? '預報' : '即時'}
-                                                    </div>
-                                                    
-                                                    <div className="flex items-center gap-2 mt-1">
-                                                        {getWeatherIcon(weather.code)}
-                                                        <div className="flex flex-col items-end">
-                                                            <span className="text-2xl font-bold leading-none text-amber-900">{weather.temp}°C</span>
-                                                            <span className="text-[10px] opacity-80 font-bold text-amber-800">{weather.desc}</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </>
-                                ) : (
-                                    /* Collapsed State - Minimal Header */
-                                    <div className="flex justify-between items-center px-2 animate-in fade-in duration-300">
-                                         <h1 className="text-sm font-bold flex items-center gap-2 text-amber-950">
-                                            <MapPin className="w-3 h-3 text-amber-700" />
-                                            澳門之旅 <span className="opacity-75 font-normal text-xs">| Day {currentDay}</span>
-                                         </h1>
-                                         
-                                         <div className="flex items-center gap-2">
-                                             <div className="flex items-center gap-1 bg-white/60 px-2 py-0.5 rounded text-xs backdrop-blur-md border border-white/40 text-amber-900 font-bold">
-                                                {getWeatherIcon(weather.code)}
-                                                <span>{weather.temp}°</span>
-                                             </div>
-                                             <button 
-                                                onClick={() => setShowTips(true)}
-                                                className="bg-white/60 p-1 rounded-full hover:bg-white/80 text-amber-800 transition shadow-sm backdrop-blur-sm"
-                                            >
-                                                <Info className="w-3 h-3" />
-                                            </button>
-                                         </div>
-                                    </div>
-                                )}
-                            </div>
+                    <div className={`relative shadow-lg z-10 shrink-0 transition-all duration-300 ease-in-out ${isHeaderExpanded ? 'rounded-b-3xl' : ''}`}>
+                        
+                        {/* Background Image Layer */}
+                        <div className="absolute inset-0 z-0 overflow-hidden rounded-b-3xl bg-amber-100">
+                             {/* User uploaded image with fallback */}
+                             <img 
+                                src="./Macau_Banner.png" 
+                                onError={(e) => {
+                                    e.target.onerror = null; 
+                                    e.target.src="https://placehold.co/800x600/064e3b/10b981.png?text=Macau+View";
+                                }}
+                                alt="Header Background" 
+                                className="w-full h-full object-cover opacity-90" 
+                             />
+                             {/* Warm Light Gradient Overlay for Golden Macau feel */}
+                             <div className="absolute inset-0 bg-gradient-to-b from-amber-100/30 via-amber-50/80 to-white/95" />
                         </div>
-                    )}
+
+                        {/* Content Layer */}
+                        <div className={`relative z-10 text-amber-950 ${isHeaderExpanded ? 'p-6 pt-10' : 'p-2 pt-8 pb-3'}`}>
+                            
+                            {/* Toggle Button */}
+                            <button 
+                                onClick={() => setIsHeaderExpanded(!isHeaderExpanded)}
+                                className="absolute bottom-[-12px] left-1/2 transform -translate-x-1/2 bg-amber-900 text-white rounded-full p-1 shadow-md border border-amber-800 z-20 hover:scale-110 transition-transform"
+                            >
+                                {isHeaderExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                            </button>
+
+                            {isHeaderExpanded ? (
+                                <>
+                                    <div className="flex justify-between items-start mb-4 animate-in fade-in zoom-in duration-300">
+                                        <div>
+                                            <h1 className="text-2xl font-bold tracking-tight drop-shadow-sm text-amber-950">澳門奢華慢活之旅</h1>
+                                            <div className="flex items-center gap-2 mt-1 opacity-90 text-sm font-medium text-amber-900">
+                                                <MapPin className="w-4 h-4" />
+                                                <span>Macau, China</span>
+                                            </div>
+                                        </div>
+                                        <button 
+                                            onClick={() => setShowTips(true)}
+                                            className="bg-white/60 p-2 rounded-full hover:bg-white/80 text-amber-800 transition shadow-sm backdrop-blur-sm border border-amber-200/50"
+                                        >
+                                            <Info className="w-5 h-5" />
+                                        </button>
+                                    </div>
+                                    
+                                    <div className="flex items-end justify-between animate-in slide-in-from-top-2 duration-300">
+                                        <div>
+                                            <p className="text-amber-800 text-sm font-bold uppercase tracking-wider">Day {currentDay}</p>
+                                            <p className="text-3xl font-bold text-amber-950">{currentDateStr}</p>
+                                        </div>
+                                        {/* Enhanced Weather Widget */}
+                                        <div className="flex flex-col items-end">
+                                            <div className="flex items-center gap-2 bg-white/60 px-3 py-1.5 rounded-lg backdrop-blur-md shadow-sm border border-white/40 relative overflow-hidden group">
+                                                <div className={`absolute top-0 right-0 px-1 py-[1px] text-[8px] font-bold uppercase rounded-bl shadow-sm
+                                                    ${weather.isForecast ? 'bg-orange-500 text-white' : 'bg-blue-500 text-white'}`}>
+                                                    {weather.isForecast ? '預報' : '即時'}
+                                                </div>
+                                                
+                                                <div className="flex items-center gap-2 mt-1">
+                                                    {getWeatherIcon(weather.code)}
+                                                    <div className="flex flex-col items-end">
+                                                        <span className="text-2xl font-bold leading-none text-amber-900">{weather.temp}°C</span>
+                                                        <span className="text-[10px] opacity-80 font-bold text-amber-800">{weather.desc}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>
+                            ) : (
+                                /* Collapsed State - Minimal Header */
+                                <div className="flex justify-between items-center px-2 animate-in fade-in duration-300">
+                                     <h1 className="text-sm font-bold flex items-center gap-2 text-amber-950">
+                                        <MapPin className="w-3 h-3 text-amber-700" />
+                                        澳門之旅 <span className="opacity-75 font-normal text-xs">| Day {currentDay}</span>
+                                     </h1>
+                                     
+                                     <div className="flex items-center gap-2">
+                                         <div className="flex items-center gap-1 bg-white/60 px-2 py-0.5 rounded text-xs backdrop-blur-md border border-white/40 text-amber-900 font-bold">
+                                            {getWeatherIcon(weather.code)}
+                                            <span>{weather.temp}°</span>
+                                         </div>
+                                         <button 
+                                            onClick={() => setShowTips(true)}
+                                            className="bg-white/60 p-1 rounded-full hover:bg-white/80 text-amber-800 transition shadow-sm backdrop-blur-sm"
+                                        >
+                                            <Info className="w-3 h-3" />
+                                        </button>
+                                     </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
 
                     {/* --- Main Content Area --- */}
                     <div className="flex-1 overflow-y-auto overflow-x-hidden relative scroll-smooth bg-gray-50">
@@ -931,6 +1188,10 @@
                         {view === 'googleMap' && <GoogleMapTab points={allMapPoints} />}
 
                         {view === 'gallery' && <GalleryView itineraryData={itineraryData} />}
+                        
+                        {view === 'foodGuide' && <FoodGuideView />}
+
+                        {view === 'souvenirs' && <SouvenirView />}
                     </div>
 
                     {/* --- Bottom Navigation --- */}
@@ -958,6 +1219,26 @@
                         >
                             <ImageIcon className="w-5 h-5 mb-1" />
                             <span className="text-[10px] font-medium">插圖</span>
+                        </button>
+                        <button
+                            onClick={() => setView('foodGuide')}
+                            className={`flex flex-col items-center p-2 rounded-xl transition-all w-12
+                                ${view === 'foodGuide' 
+                                    ? 'bg-amber-100 text-amber-700 scale-105' 
+                                    : 'text-gray-400 hover:bg-gray-50'}`}
+                        >
+                            <Utensils className="w-5 h-5 mb-1" />
+                            <span className="text-[10px] font-medium">餐點</span>
+                        </button>
+                        <button
+                            onClick={() => setView('souvenirs')}
+                            className={`flex flex-col items-center p-2 rounded-xl transition-all w-12
+                                ${view === 'souvenirs' 
+                                    ? 'bg-orange-100 text-orange-700 scale-105' 
+                                    : 'text-gray-400 hover:bg-gray-50'}`}
+                        >
+                            <Gift className="w-5 h-5 mb-1" />
+                            <span className="text-[10px] font-medium">伴手禮</span>
                         </button>
                         <button
                             onClick={() => setView('amap')}
