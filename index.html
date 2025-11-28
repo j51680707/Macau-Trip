@@ -176,8 +176,8 @@
                     location: '澳門國際機場 (MFM)',
                     type: 'flight',
                     coords: [22.1583, 113.5933],
-                    description: '航班 NX631 (08:15 TPE - 10:05 MFM)。領取行李後，分兩台計程車前往十六浦。',
-                    details: { flight: 'NX631 (08:15-10:05)', terminal: 'Arrivals', notes: '記得開啟漫遊或更換 SIM 卡' },
+                    description: '領取行李，入境大廳集合。',
+                    details: { flight: 'NX631', notes: '開啟漫遊' },
                     imageParams: 'airport,arrival'
                 },
                 {
@@ -385,12 +385,13 @@
                 {
                     id: 'd3-3',
                     time: '12:00',
-                    title: '午餐：雅憩花園',
-                    location: '雅憩花園餐廳',
+                    title: '午餐：陳勝記',
+                    location: '陳勝記 (Chan Seng Kei)',
                     type: 'food',
                     coords: [22.1188, 113.5519],
-                    description: '大樹下葡國菜 (含素食選項)。',
-                    imageParams: 'outdoor dining'
+                    description: '舌尖上的中國推薦！歷史悠久的順德菜大排檔。',
+                    details: { specialty: '陳皮鴨 (必點)', history: '始於1945年' },
+                    imageParams: 'chinese outdoor dining'
                 },
                 {
                     id: 'd3-4',
@@ -718,6 +719,40 @@
                             </div>
                         </div>
                     </div>
+
+                    {/* Restaurant 3: Chan Seng Kei */}
+                    <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100">
+                        <div className="bg-emerald-50 p-4 border-b border-emerald-100 flex justify-between items-center">
+                             <div>
+                                <h3 className="text-lg font-bold text-emerald-900 flex items-center gap-2">
+                                   <ChefHat className="w-5 h-5 text-emerald-600" /> 陳勝記 (Chan Seng Kei)
+                                </h3>
+                                <p className="text-xs text-emerald-700 mt-1">路環聖方濟各聖堂旁 | 順德菜大排檔</p>
+                             </div>
+                        </div>
+                        
+                        <div className="p-4 space-y-4">
+                            <div>
+                                <h4 className="text-sm font-bold text-gray-700 mb-2 flex items-center gap-1">🥘 招牌必點</h4>
+                                <ul className="space-y-2 text-xs text-gray-600">
+                                    <li><span className="font-bold text-gray-800">陳皮鴨</span>：鎮店之寶，鴨肉軟爛入味，陳皮香氣解膩。</li>
+                                    <li><span className="font-bold text-gray-800">椒鹽九肚魚</span>：外酥內嫩，下酒好菜。</li>
+                                    <li><span className="font-bold text-gray-800">菠蘿生炒骨</span>：經典粵菜，酸甜開胃。</li>
+                                     <li><span className="font-bold text-gray-800">西蘭花炒鮮魷</span>：鑊氣十足，魷魚爽脆。</li>
+                                </ul>
+                            </div>
+                             <div className="bg-green-50 p-3 rounded-lg border border-green-100">
+                                <h4 className="text-sm font-bold text-green-800 mb-2 flex items-center gap-1">
+                                    <Leaf className="w-4 h-4" /> 素食專區 (沈姓友人)
+                                </h4>
+                                <ul className="space-y-2 text-xs text-green-700">
+                                    <li><span className="font-bold">紅燒豆腐</span>：請老闆做素的(去蠔油/肉末)，外焦內嫩。</li>
+                                    <li><span className="font-bold">羅漢齋</span>：傳統粵式素菜(粉絲/木耳/冬菇)，建議確認是否有供應。</li>
+                                    <li><span className="font-bold">清炒時蔬</span>：菜心/芥蘭/通菜，清炒蒜蓉皆可。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             );
         };
@@ -1018,103 +1053,101 @@
                 <div className="flex flex-col h-screen bg-slate-50 font-sans max-w-md mx-auto relative shadow-2xl overflow-hidden">
                     
                     {/* --- Top Bar / Hero Section --- */}
-                    {view !== 'amap' && view !== 'googleMap' && (
-                        <div className={`relative shadow-lg z-10 shrink-0 transition-all duration-300 ease-in-out ${isHeaderExpanded ? 'rounded-b-3xl' : ''}`}>
-                            
-                            {/* Background Image Layer */}
-                            <div className="absolute inset-0 z-0 overflow-hidden rounded-b-3xl bg-amber-100">
-                                 {/* User uploaded image with fallback */}
-                                 <img 
-                                    src="./Macau_Banner.png" 
-                                    onError={(e) => {
-                                        e.target.onerror = null; 
-                                        e.target.src="https://placehold.co/800x600/064e3b/10b981.png?text=Macau+View";
-                                    }}
-                                    alt="Header Background" 
-                                    className="w-full h-full object-cover opacity-90" 
-                                 />
-                                 {/* Warm Light Gradient Overlay for Golden Macau feel */}
-                                 <div className="absolute inset-0 bg-gradient-to-b from-amber-100/30 via-amber-50/80 to-white/95" />
-                            </div>
-
-                            {/* Content Layer */}
-                            <div className={`relative z-10 text-amber-950 ${isHeaderExpanded ? 'p-6 pt-10' : 'p-2 pt-8 pb-3'}`}>
-                                
-                                {/* Toggle Button */}
-                                <button 
-                                    onClick={() => setIsHeaderExpanded(!isHeaderExpanded)}
-                                    className="absolute bottom-[-12px] left-1/2 transform -translate-x-1/2 bg-amber-900 text-white rounded-full p-1 shadow-md border border-amber-800 z-20 hover:scale-110 transition-transform"
-                                >
-                                    {isHeaderExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                                </button>
-
-                                {isHeaderExpanded ? (
-                                    <>
-                                        <div className="flex justify-between items-start mb-4 animate-in fade-in zoom-in duration-300">
-                                            <div>
-                                                <h1 className="text-2xl font-bold tracking-tight drop-shadow-sm text-amber-950">澳門奢華慢活之旅</h1>
-                                                <div className="flex items-center gap-2 mt-1 opacity-90 text-sm font-medium text-amber-900">
-                                                    <MapPin className="w-4 h-4" />
-                                                    <span>Macau, China</span>
-                                                </div>
-                                            </div>
-                                            <button 
-                                                onClick={() => setShowTips(true)}
-                                                className="bg-white/60 p-2 rounded-full hover:bg-white/80 text-amber-800 transition shadow-sm backdrop-blur-sm border border-amber-200/50"
-                                            >
-                                                <Info className="w-5 h-5" />
-                                            </button>
-                                        </div>
-                                        
-                                        <div className="flex items-end justify-between animate-in slide-in-from-top-2 duration-300">
-                                            <div>
-                                                <p className="text-amber-800 text-sm font-bold uppercase tracking-wider">Day {currentDay}</p>
-                                                <p className="text-3xl font-bold text-amber-950">{currentDateStr}</p>
-                                            </div>
-                                            {/* Enhanced Weather Widget */}
-                                            <div className="flex flex-col items-end">
-                                                <div className="flex items-center gap-2 bg-white/60 px-3 py-1.5 rounded-lg backdrop-blur-md shadow-sm border border-white/40 relative overflow-hidden group">
-                                                    <div className={`absolute top-0 right-0 px-1 py-[1px] text-[8px] font-bold uppercase rounded-bl shadow-sm
-                                                        ${weather.isForecast ? 'bg-orange-500 text-white' : 'bg-blue-500 text-white'}`}>
-                                                        {weather.isForecast ? '預報' : '即時'}
-                                                    </div>
-                                                    
-                                                    <div className="flex items-center gap-2 mt-1">
-                                                        {getWeatherIcon(weather.code)}
-                                                        <div className="flex flex-col items-end">
-                                                            <span className="text-2xl font-bold leading-none text-amber-900">{weather.temp}°C</span>
-                                                            <span className="text-[10px] opacity-80 font-bold text-amber-800">{weather.desc}</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </>
-                                ) : (
-                                    /* Collapsed State - Minimal Header */
-                                    <div className="flex justify-between items-center px-2 animate-in fade-in duration-300">
-                                         <h1 className="text-sm font-bold flex items-center gap-2 text-amber-950">
-                                            <MapPin className="w-3 h-3 text-amber-700" />
-                                            澳門之旅 <span className="opacity-75 font-normal text-xs">| Day {currentDay}</span>
-                                         </h1>
-                                         
-                                         <div className="flex items-center gap-2">
-                                             <div className="flex items-center gap-1 bg-white/60 px-2 py-0.5 rounded text-xs backdrop-blur-md border border-white/40 text-amber-900 font-bold">
-                                                {getWeatherIcon(weather.code)}
-                                                <span>{weather.temp}°</span>
-                                             </div>
-                                             <button 
-                                                onClick={() => setShowTips(true)}
-                                                className="bg-white/60 p-1 rounded-full hover:bg-white/80 text-amber-800 transition shadow-sm backdrop-blur-sm"
-                                            >
-                                                <Info className="w-3 h-3" />
-                                            </button>
-                                         </div>
-                                    </div>
-                                )}
-                            </div>
+                    <div className={`relative shadow-lg z-10 shrink-0 transition-all duration-300 ease-in-out ${isHeaderExpanded ? 'rounded-b-3xl' : ''}`}>
+                        
+                        {/* Background Image Layer */}
+                        <div className="absolute inset-0 z-0 overflow-hidden rounded-b-3xl bg-amber-100">
+                             {/* User uploaded image with fallback */}
+                             <img 
+                                src="./Macau_Banner.png" 
+                                onError={(e) => {
+                                    e.target.onerror = null; 
+                                    e.target.src="https://placehold.co/800x600/064e3b/10b981.png?text=Macau+View";
+                                }}
+                                alt="Header Background" 
+                                className="w-full h-full object-cover opacity-90" 
+                             />
+                             {/* Warm Light Gradient Overlay for Golden Macau feel */}
+                             <div className="absolute inset-0 bg-gradient-to-b from-amber-100/30 via-amber-50/80 to-white/95" />
                         </div>
-                    )}
+
+                        {/* Content Layer */}
+                        <div className={`relative z-10 text-amber-950 ${isHeaderExpanded ? 'p-6 pt-10' : 'p-2 pt-8 pb-3'}`}>
+                            
+                            {/* Toggle Button */}
+                            <button 
+                                onClick={() => setIsHeaderExpanded(!isHeaderExpanded)}
+                                className="absolute bottom-[-12px] left-1/2 transform -translate-x-1/2 bg-amber-900 text-white rounded-full p-1 shadow-md border border-amber-800 z-20 hover:scale-110 transition-transform"
+                            >
+                                {isHeaderExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                            </button>
+
+                            {isHeaderExpanded ? (
+                                <>
+                                    <div className="flex justify-between items-start mb-4 animate-in fade-in zoom-in duration-300">
+                                        <div>
+                                            <h1 className="text-2xl font-bold tracking-tight drop-shadow-sm text-amber-950">澳門奢華慢活之旅</h1>
+                                            <div className="flex items-center gap-2 mt-1 opacity-90 text-sm font-medium text-amber-900">
+                                                <MapPin className="w-4 h-4" />
+                                                <span>Macau, China</span>
+                                            </div>
+                                        </div>
+                                        <button 
+                                            onClick={() => setShowTips(true)}
+                                            className="bg-white/60 p-2 rounded-full hover:bg-white/80 text-amber-800 transition shadow-sm backdrop-blur-sm border border-amber-200/50"
+                                        >
+                                            <Info className="w-5 h-5" />
+                                        </button>
+                                    </div>
+                                    
+                                    <div className="flex items-end justify-between animate-in slide-in-from-top-2 duration-300">
+                                        <div>
+                                            <p className="text-amber-800 text-sm font-bold uppercase tracking-wider">Day {currentDay}</p>
+                                            <p className="text-3xl font-bold text-amber-950">{currentDateStr}</p>
+                                        </div>
+                                        {/* Enhanced Weather Widget */}
+                                        <div className="flex flex-col items-end">
+                                            <div className="flex items-center gap-2 bg-white/60 px-3 py-1.5 rounded-lg backdrop-blur-md shadow-sm border border-white/40 relative overflow-hidden group">
+                                                <div className={`absolute top-0 right-0 px-1 py-[1px] text-[8px] font-bold uppercase rounded-bl shadow-sm
+                                                    ${weather.isForecast ? 'bg-orange-500 text-white' : 'bg-blue-500 text-white'}`}>
+                                                    {weather.isForecast ? '預報' : '即時'}
+                                                </div>
+                                                
+                                                <div className="flex items-center gap-2 mt-1">
+                                                    {getWeatherIcon(weather.code)}
+                                                    <div className="flex flex-col items-end">
+                                                        <span className="text-2xl font-bold leading-none text-amber-900">{weather.temp}°C</span>
+                                                        <span className="text-[10px] opacity-80 font-bold text-amber-800">{weather.desc}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>
+                            ) : (
+                                /* Collapsed State - Minimal Header */
+                                <div className="flex justify-between items-center px-2 animate-in fade-in duration-300">
+                                     <h1 className="text-sm font-bold flex items-center gap-2 text-amber-950">
+                                        <MapPin className="w-3 h-3 text-amber-700" />
+                                        澳門之旅 <span className="opacity-75 font-normal text-xs">| Day {currentDay}</span>
+                                     </h1>
+                                     
+                                     <div className="flex items-center gap-2">
+                                         <div className="flex items-center gap-1 bg-white/60 px-2 py-0.5 rounded text-xs backdrop-blur-md border border-white/40 text-amber-900 font-bold">
+                                            {getWeatherIcon(weather.code)}
+                                            <span>{weather.temp}°</span>
+                                         </div>
+                                         <button 
+                                            onClick={() => setShowTips(true)}
+                                            className="bg-white/60 p-1 rounded-full hover:bg-white/80 text-amber-800 transition shadow-sm backdrop-blur-sm"
+                                        >
+                                            <Info className="w-3 h-3" />
+                                        </button>
+                                     </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
 
                     {/* --- Main Content Area --- */}
                     <div className="flex-1 overflow-y-auto overflow-x-hidden relative scroll-smooth bg-gray-50">
