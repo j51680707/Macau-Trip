@@ -853,7 +853,7 @@
                         <div className="relative rounded-lg overflow-hidden bg-orange-50/50 border border-orange-100">
                             {/* Uses relative path for GitHub Pages deployment */}
                             <img 
-                                src="./Gemini_Generated_Image_l7ojm5l7ojm5l7oj.png" 
+                                src="./MacauTripGuide.png" 
                                 onError={(e) => {
                                     e.target.onerror = null; 
                                     e.target.src="https://placehold.co/600x1200/fffbf0/ea580c?text=Image+Not+Found+(Upload+to+Repo)";
@@ -1053,101 +1053,103 @@
                 <div className="flex flex-col h-screen bg-slate-50 font-sans max-w-md mx-auto relative shadow-2xl overflow-hidden">
                     
                     {/* --- Top Bar / Hero Section --- */}
-                    <div className={`relative shadow-lg z-10 shrink-0 transition-all duration-300 ease-in-out ${isHeaderExpanded ? 'rounded-b-3xl' : ''}`}>
-                        
-                        {/* Background Image Layer */}
-                        <div className="absolute inset-0 z-0 overflow-hidden rounded-b-3xl bg-amber-100">
-                             {/* User uploaded image with fallback */}
-                             <img 
-                                src="./Macau_Banner.png" 
-                                onError={(e) => {
-                                    e.target.onerror = null; 
-                                    e.target.src="https://placehold.co/800x600/064e3b/10b981.png?text=Macau+View";
-                                }}
-                                alt="Header Background" 
-                                className="w-full h-full object-cover opacity-90" 
-                             />
-                             {/* Warm Light Gradient Overlay for Golden Macau feel */}
-                             <div className="absolute inset-0 bg-gradient-to-b from-amber-100/30 via-amber-50/80 to-white/95" />
-                        </div>
-
-                        {/* Content Layer */}
-                        <div className={`relative z-10 text-amber-950 ${isHeaderExpanded ? 'p-6 pt-10' : 'p-2 pt-8 pb-3'}`}>
+                    {view !== 'amap' && view !== 'googleMap' && (
+                        <div className={`relative shadow-lg z-10 shrink-0 transition-all duration-300 ease-in-out ${isHeaderExpanded ? 'rounded-b-3xl' : ''}`}>
                             
-                            {/* Toggle Button */}
-                            <button 
-                                onClick={() => setIsHeaderExpanded(!isHeaderExpanded)}
-                                className="absolute bottom-[-12px] left-1/2 transform -translate-x-1/2 bg-amber-900 text-white rounded-full p-1 shadow-md border border-amber-800 z-20 hover:scale-110 transition-transform"
-                            >
-                                {isHeaderExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                            </button>
+                            {/* Background Image Layer */}
+                            <div className="absolute inset-0 z-0 overflow-hidden rounded-b-3xl bg-amber-100">
+                                 {/* User uploaded image with fallback */}
+                                 <img 
+                                    src="./Macau_Banner.png" 
+                                    onError={(e) => {
+                                        e.target.onerror = null; 
+                                        e.target.src="https://placehold.co/800x600/064e3b/10b981.png?text=Macau+View";
+                                    }}
+                                    alt="Header Background" 
+                                    className="w-full h-full object-cover opacity-90" 
+                                 />
+                                 {/* Warm Light Gradient Overlay for Golden Macau feel */}
+                                 <div className="absolute inset-0 bg-gradient-to-b from-amber-100/30 via-amber-50/80 to-white/95" />
+                            </div>
 
-                            {isHeaderExpanded ? (
-                                <>
-                                    <div className="flex justify-between items-start mb-4 animate-in fade-in zoom-in duration-300">
-                                        <div>
-                                            <h1 className="text-2xl font-bold tracking-tight drop-shadow-sm text-amber-950">澳門奢華慢活之旅</h1>
-                                            <div className="flex items-center gap-2 mt-1 opacity-90 text-sm font-medium text-amber-900">
-                                                <MapPin className="w-4 h-4" />
-                                                <span>Macau, China</span>
-                                            </div>
-                                        </div>
-                                        <button 
-                                            onClick={() => setShowTips(true)}
-                                            className="bg-white/60 p-2 rounded-full hover:bg-white/80 text-amber-800 transition shadow-sm backdrop-blur-sm border border-amber-200/50"
-                                        >
-                                            <Info className="w-5 h-5" />
-                                        </button>
-                                    </div>
-                                    
-                                    <div className="flex items-end justify-between animate-in slide-in-from-top-2 duration-300">
-                                        <div>
-                                            <p className="text-amber-800 text-sm font-bold uppercase tracking-wider">Day {currentDay}</p>
-                                            <p className="text-3xl font-bold text-amber-950">{currentDateStr}</p>
-                                        </div>
-                                        {/* Enhanced Weather Widget */}
-                                        <div className="flex flex-col items-end">
-                                            <div className="flex items-center gap-2 bg-white/60 px-3 py-1.5 rounded-lg backdrop-blur-md shadow-sm border border-white/40 relative overflow-hidden group">
-                                                <div className={`absolute top-0 right-0 px-1 py-[1px] text-[8px] font-bold uppercase rounded-bl shadow-sm
-                                                    ${weather.isForecast ? 'bg-orange-500 text-white' : 'bg-blue-500 text-white'}`}>
-                                                    {weather.isForecast ? '預報' : '即時'}
+                            {/* Content Layer */}
+                            <div className={`relative z-10 text-amber-950 ${isHeaderExpanded ? 'p-6 pt-10' : 'p-2 pt-8 pb-3'}`}>
+                                
+                                {/* Toggle Button */}
+                                <button 
+                                    onClick={() => setIsHeaderExpanded(!isHeaderExpanded)}
+                                    className="absolute bottom-[-12px] left-1/2 transform -translate-x-1/2 bg-amber-900 text-white rounded-full p-1 shadow-md border border-amber-800 z-20 hover:scale-110 transition-transform"
+                                >
+                                    {isHeaderExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                                </button>
+
+                                {isHeaderExpanded ? (
+                                    <>
+                                        <div className="flex justify-between items-start mb-4 animate-in fade-in zoom-in duration-300">
+                                            <div>
+                                                <h1 className="text-2xl font-bold tracking-tight drop-shadow-sm text-amber-950">澳門奢華慢活之旅</h1>
+                                                <div className="flex items-center gap-2 mt-1 opacity-90 text-sm font-medium text-amber-900">
+                                                    <MapPin className="w-4 h-4" />
+                                                    <span>Macau, China</span>
                                                 </div>
-                                                
-                                                <div className="flex items-center gap-2 mt-1">
-                                                    {getWeatherIcon(weather.code)}
-                                                    <div className="flex flex-col items-end">
-                                                        <span className="text-2xl font-bold leading-none text-amber-900">{weather.temp}°C</span>
-                                                        <span className="text-[10px] opacity-80 font-bold text-amber-800">{weather.desc}</span>
+                                            </div>
+                                            <button 
+                                                onClick={() => setShowTips(true)}
+                                                className="bg-white/60 p-2 rounded-full hover:bg-white/80 text-amber-800 transition shadow-sm backdrop-blur-sm border border-amber-200/50"
+                                            >
+                                                <Info className="w-5 h-5" />
+                                            </button>
+                                        </div>
+                                        
+                                        <div className="flex items-end justify-between animate-in slide-in-from-top-2 duration-300">
+                                            <div>
+                                                <p className="text-amber-800 text-sm font-bold uppercase tracking-wider">Day {currentDay}</p>
+                                                <p className="text-3xl font-bold text-amber-950">{currentDateStr}</p>
+                                            </div>
+                                            {/* Enhanced Weather Widget */}
+                                            <div className="flex flex-col items-end">
+                                                <div className="flex items-center gap-2 bg-white/60 px-3 py-1.5 rounded-lg backdrop-blur-md shadow-sm border border-white/40 relative overflow-hidden group">
+                                                    <div className={`absolute top-0 right-0 px-1 py-[1px] text-[8px] font-bold uppercase rounded-bl shadow-sm
+                                                        ${weather.isForecast ? 'bg-orange-500 text-white' : 'bg-blue-500 text-white'}`}>
+                                                        {weather.isForecast ? '預報' : '即時'}
+                                                    </div>
+                                                    
+                                                    <div className="flex items-center gap-2 mt-1">
+                                                        {getWeatherIcon(weather.code)}
+                                                        <div className="flex flex-col items-end">
+                                                            <span className="text-2xl font-bold leading-none text-amber-900">{weather.temp}°C</span>
+                                                            <span className="text-[10px] opacity-80 font-bold text-amber-800">{weather.desc}</span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </>
-                            ) : (
-                                /* Collapsed State - Minimal Header */
-                                <div className="flex justify-between items-center px-2 animate-in fade-in duration-300">
-                                     <h1 className="text-sm font-bold flex items-center gap-2 text-amber-950">
-                                        <MapPin className="w-3 h-3 text-amber-700" />
-                                        澳門之旅 <span className="opacity-75 font-normal text-xs">| Day {currentDay}</span>
-                                     </h1>
-                                     
-                                     <div className="flex items-center gap-2">
-                                         <div className="flex items-center gap-1 bg-white/60 px-2 py-0.5 rounded text-xs backdrop-blur-md border border-white/40 text-amber-900 font-bold">
-                                            {getWeatherIcon(weather.code)}
-                                            <span>{weather.temp}°</span>
+                                    </>
+                                ) : (
+                                    /* Collapsed State - Minimal Header */
+                                    <div className="flex justify-between items-center px-2 animate-in fade-in duration-300">
+                                         <h1 className="text-sm font-bold flex items-center gap-2 text-amber-950">
+                                            <MapPin className="w-3 h-3 text-amber-700" />
+                                            澳門之旅 <span className="opacity-75 font-normal text-xs">| Day {currentDay}</span>
+                                         </h1>
+                                         
+                                         <div className="flex items-center gap-2">
+                                             <div className="flex items-center gap-1 bg-white/60 px-2 py-0.5 rounded text-xs backdrop-blur-md border border-white/40 text-amber-900 font-bold">
+                                                {getWeatherIcon(weather.code)}
+                                                <span>{weather.temp}°</span>
+                                             </div>
+                                             <button 
+                                                onClick={() => setShowTips(true)}
+                                                className="bg-white/60 p-1 rounded-full hover:bg-white/80 text-amber-800 transition shadow-sm backdrop-blur-sm"
+                                            >
+                                                <Info className="w-3 h-3" />
+                                            </button>
                                          </div>
-                                         <button 
-                                            onClick={() => setShowTips(true)}
-                                            className="bg-white/60 p-1 rounded-full hover:bg-white/80 text-amber-800 transition shadow-sm backdrop-blur-sm"
-                                        >
-                                            <Info className="w-3 h-3" />
-                                        </button>
-                                     </div>
-                                </div>
-                            )}
+                                    </div>
+                                )}
+                            </div>
                         </div>
-                    </div>
+                    )}
 
                     {/* --- Main Content Area --- */}
                     <div className="flex-1 overflow-y-auto overflow-x-hidden relative scroll-smooth bg-gray-50">
