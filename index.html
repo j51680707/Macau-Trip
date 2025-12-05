@@ -187,7 +187,7 @@
                     location: '新葡京酒店',
                     type: 'transport',
                     coords: [22.1908, 113.5421],
-                    description: '搭乘新葡京免費接駁車。',
+                    description: '搭乘新葡京免費接駁車 (或搭上葡京車轉乘)。',
                     details: { transport: '免費接駁車' },
                     imageParams: 'grand lisboa macau'
                 },
@@ -198,8 +198,8 @@
                     location: "Margaret's Café e Nata",
                     type: 'food',
                     coords: [22.1919, 113.5415],
-                    description: '行動策略：4 人在新葡京大堂顧行李，2 人去巷內買蛋塔。',
-                    details: { notes: '素食注意：酥皮含油，請斟酌' },
+                    description: '策略：4人顧行李，2人去巷內買6顆蛋塔。',
+                    details: { notes: '素食注意：酥皮含油' },
                     imageParams: 'egg tart'
                 },
                 {
@@ -974,6 +974,7 @@
             
             // Exchange Rate State & Modal
             const [exchangeRate, setExchangeRate] = useState(null);
+            const [exchangeDate, setExchangeDate] = useState(null);
             const [showConverter, setShowConverter] = useState(false);
             const [hkdAmount, setHkdAmount] = useState('');
 
@@ -1000,12 +1001,14 @@
                             const data = await res.json();
                             const rate = data.rates.TWD;
                             setExchangeRate(rate.toFixed(2));
+                            setExchangeDate(data.date);
                         } else {
                             throw new Error("Failed to fetch");
                         }
                     } catch (e) {
                         console.warn("Exchange rate fetch failed, using fallback.", e);
                         setExchangeRate("4.15"); // Fallback static value (Approximate)
+                        setExchangeDate(new Date().toISOString().split('T')[0]);
                     }
                 };
                 fetchExchangeRate();
@@ -1522,7 +1525,10 @@
                                                 ? Math.round(parseFloat(hkdAmount) * parseFloat(exchangeRate)).toLocaleString() 
                                                 : '0'}
                                         </div>
-                                        <p className="text-xs text-gray-400 text-right mt-1">即時匯率參考: {exchangeRate}</p>
+                                        <p className="text-xs text-gray-400 text-right mt-1">
+                                            即時匯率參考: {exchangeRate}
+                                            {exchangeDate && <span className="ml-1">({exchangeDate} 更新)</span>}
+                                        </p>
                                     </div>
                                 </div>
                             </div>
